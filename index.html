@@ -5,322 +5,624 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Velavan Finance</title>
 <style>
+/* ============================================================
+   LIGHT THEME TOKENS
+============================================================ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d3e;
-  --border:#2d3650;--border2:#3a4460;
-  --text:#e8eaf0;--text2:#9ba3bc;--text3:#6b7494;
-  --gold:#f0b429;--gold2:#ffd166;--gold-bg:rgba(240,180,41,0.13);
-  --green:#22c55e;--green-bg:rgba(34,197,94,0.12);
-  --red:#ef4444;--red-bg:rgba(239,68,68,0.12);
-  --blue:#60a5fa;--blue-bg:rgba(96,165,250,0.12);
-  --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.12);
-  --radius:8px;--radius-lg:12px;--radius-xl:16px;
-  --nav-h:60px;--header-h:52px;
+  /* backgrounds */
+  --bg:       #f3ede4;
+  --bg2:      #ffffff;
+  --bg3:      #faf7f3;
+  --bg4:      #f0ebe2;
+  /* borders */
+  --border:   #e2dbd0;
+  --border2:  #cec4b6;
+  /* text */
+  --text:     #1c1610;
+  --text2:    #5c5044;
+  --text3:    #9e8f82;
+  /* gold */
+  --gold:     #b8780a;
+  --gold2:    #d4940f;
+  --goldL:    #f0b429;
+  --gold-bg:  rgba(184,120,10,0.1);
+  --gold-bdr: rgba(184,120,10,0.35);
+  /* semantic */
+  --green:    #15803d;--green-bg:rgba(21,128,61,0.09);--green-bdr:rgba(21,128,61,0.3);
+  --red:      #b91c1c;--red-bg:rgba(185,28,28,0.08);--red-bdr:rgba(185,28,28,0.3);
+  --blue:     #1d4ed8;--blue-bg:rgba(29,78,216,0.08);--blue-bdr:rgba(29,78,216,0.3);
+  --purple:   #6d28d9;--purple-bg:rgba(109,40,217,0.08);--purple-bdr:rgba(109,40,217,0.3);
+  --amber:    #b45309;--amber-bg:rgba(180,83,9,0.08);
+  /* radius */
+  --r:8px;--rl:12px;--rxl:18px;
+  /* layout */
+  --sidebar-w:230px;
+  --header-h:56px;
+  --nav-h:64px;
+  /* shadows */
+  --shadow-sm:0 1px 3px rgba(28,22,16,0.08),0 1px 2px rgba(28,22,16,0.06);
+  --shadow:0 4px 12px rgba(28,22,16,0.10),0 2px 4px rgba(28,22,16,0.06);
+  --shadow-lg:0 10px 30px rgba(28,22,16,0.13);
 }
-html,body{height:100%;overflow:hidden;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
-input,select,textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 13px;border-radius:var(--radius);font-family:inherit;font-size:15px;outline:none;width:100%;-webkit-appearance:none;appearance:none;}
-input:focus,select:focus,textarea:focus{border-color:var(--gold);}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ba3bc' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
-select option{background:var(--bg3);}
+
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:14px;overflow:hidden;}
+
+/* ============================================================
+   BASE ELEMENTS
+============================================================ */
+input,select,textarea{
+  background:var(--bg2);border:1.5px solid var(--border);color:var(--text);
+  padding:10px 13px;border-radius:var(--r);font-family:inherit;font-size:14px;
+  outline:none;width:100%;-webkit-appearance:none;appearance:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-bg);}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239e8f82' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+select option{background:var(--bg2);color:var(--text);}
 button{cursor:pointer;font-family:inherit;font-size:14px;border:none;background:none;color:var(--text);}
-.btn{padding:10px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg3);color:var(--text);display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background 0.12s;}
-.btn:active{background:var(--bg4);}
-.btn-gold{background:var(--gold);border-color:var(--gold);color:#1a1200;font-weight:700;}
-.btn-gold:active{background:var(--gold2);}
-.btn-sm{padding:7px 12px;font-size:12px;}
-.btn-red{background:var(--red-bg);border-color:var(--red);color:var(--red);}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;}
-.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap;}
-.badge-active{background:var(--green-bg);color:var(--green);}
-.badge-inactive{background:var(--bg3);color:var(--text3);}
-.badge-overdue{background:var(--red-bg);color:var(--red);}
-.badge-completed{background:var(--blue-bg);color:var(--blue);}
-.badge-admin{background:var(--gold-bg);color:var(--gold);}
-.badge-agent{background:var(--purple-bg);color:var(--purple);}
-.badge-supervisor{background:var(--blue-bg);color:var(--blue);}
+a{color:var(--blue);text-decoration:none;}
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+.btn{padding:9px 18px;border-radius:var(--r);border:1.5px solid var(--border2);background:var(--bg2);color:var(--text);display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:500;transition:all .15s;box-shadow:var(--shadow-sm);}
+.btn:hover{background:var(--bg3);border-color:var(--border2);}
+.btn:active{transform:scale(.98);}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(184,120,10,.3);}
+.btn-gold:hover{background:var(--gold2);border-color:var(--gold2);}
+.btn-red{background:var(--red-bg);border-color:var(--red-bdr);color:var(--red);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-w{width:100%;}
+.card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shadow-sm);}
+.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap;border:1px solid transparent;}
+.badge-active{background:var(--green-bg);color:var(--green);border-color:var(--green-bdr);}
+.badge-inactive{background:var(--bg4);color:var(--text3);border-color:var(--border);}
+.badge-overdue{background:var(--red-bg);color:var(--red);border-color:var(--red-bdr);}
+.badge-completed{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bdr);}
+.badge-admin{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-bdr);}
+.badge-agent{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-bdr);}
+.badge-supervisor{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bdr);}
 .page{display:none;}
 .page.active{display:block;}
 .progress-bar{height:7px;background:var(--bg4);border-radius:4px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width 0.5s;}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:300;align-items:flex-end;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-top-left-radius:var(--radius-xl);border-top-right-radius:var(--radius-xl);padding:0 20px 24px;width:100%;max-height:88vh;overflow-y:auto;}
-.modal-handle-wrap{padding:14px 0 10px;display:flex;justify-content:center;}
-.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;}
-.form-group{margin-bottom:14px;}
-.form-label{font-size:11px;color:var(--text2);display:block;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.calc-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
-.calc-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;}
-.calc-row+.calc-row{border-top:1px solid var(--border);}
-.toast{position:fixed;bottom:calc(var(--nav-h) + 14px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:11px 22px;border-radius:30px;font-size:13px;font-weight:600;z-index:500;opacity:0;transition:all 0.22s;pointer-events:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,0.5);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldL));border-radius:4px;transition:width .5s;}
 .kv-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
 .kv-row:last-child{border-bottom:none;}
-.kv-key{color:var(--text3);flex-shrink:0;margin-right:12px;}
+.kv-key{color:var(--text3);flex-shrink:0;margin-right:10px;}
 .kv-val{font-weight:500;text-align:right;}
-.list-item{padding:13px 0;border-bottom:1px solid var(--border);}
+.list-item{padding:12px 0;border-bottom:1px solid var(--border);}
 .list-item:last-child{border-bottom:none;}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text3);}
-.empty-icon{font-size:36px;margin-bottom:10px;}
-.tabs{display:flex;gap:3px;background:var(--bg3);border-radius:var(--radius);padding:4px;}
-.tab{flex:1;padding:8px 10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--text3);text-align:center;border:none;transition:all 0.15s;}
-.tab.active{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.4);}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 14px;}
-.stat-label{font-size:11px;color:var(--text3);margin-bottom:4px;}
-.stat-value{font-size:20px;font-weight:700;}
-.stat-sub{font-size:11px;color:var(--text3);margin-top:3px;}
-/* Layout */
-#login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);overflow-y:auto;padding:20px;z-index:10;}
-#app{display:none;flex-direction:column;height:100%;position:fixed;inset:0;}
-#app.visible{display:flex;}
-/* Header */
-#app-header{height:var(--header-h);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0;z-index:20;}
-#header-back{display:none;color:var(--gold);font-size:22px;padding:4px 8px 4px 0;line-height:1;}
+.section-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;color:var(--text2);display:block;margin-bottom:5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tabs{display:flex;gap:2px;background:var(--bg4);border-radius:var(--r);padding:3px;border:1px solid var(--border);}
+.tab{flex:1;padding:7px 12px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--text3);text-align:center;border:none;transition:all .15s;}
+.tab.active{background:var(--bg2);color:var(--gold);box-shadow:var(--shadow-sm);}
+.calc-box{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;}
+.calc-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;}
+.calc-row+.calc-row{border-top:1px solid var(--border);}
+.empty-state{text-align:center;padding:48px 20px;color:var(--text3);}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.5;}
+
+/* ============================================================
+   STAT CARDS
+============================================================ */
+.stat-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:15px 17px;box-shadow:var(--shadow-sm);}
+.stat-label{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+.stat-value{font-size:22px;font-weight:700;color:var(--text);}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+.stats-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stats-4{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(min-width:640px){.stats-4{grid-template-columns:repeat(4,1fr);}}
+
+/* ============================================================
+   TABLES
+============================================================ */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--rl);border:1.5px solid var(--border);box-shadow:var(--shadow-sm);}
+table{width:100%;border-collapse:collapse;min-width:440px;}
+th{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;padding:11px 16px;text-align:left;background:var(--bg3);border-bottom:1.5px solid var(--border);white-space:nowrap;}
+td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text);white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg3);}
+
+/* ============================================================
+   TOAST
+============================================================ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--text);color:var(--bg2);padding:10px 22px;border-radius:30px;font-size:13px;font-weight:600;z-index:500;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-lg);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ============================================================
+   MODAL
+============================================================ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,22,16,.5);z-index:300;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1.5px solid var(--border);width:100%;max-height:90vh;overflow-y:auto;border-top-left-radius:var(--rxl);border-top-right-radius:var(--rxl);padding:0 20px 28px;box-shadow:var(--shadow-lg);}
+.modal-handle-row{padding:14px 0 8px;display:flex;justify-content:center;}
+.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.modal-head h2{font-size:17px;font-weight:700;}
+.modal-close{color:var(--text3);font-size:22px;padding:2px 8px;background:none;border:none;}
+.modal-close:hover{color:var(--text);}
+@media(min-width:640px){
+  .modal-overlay{align-items:center;}
+  .modal{width:500px;border-radius:var(--rxl);max-height:85vh;}
+  .modal-handle-row{display:none;}
+}
+
+/* ============================================================
+   LOGIN PAGE
+============================================================ */
+#login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;z-index:100;background:linear-gradient(135deg,#f8f3eb 0%,#ede4d4 50%,#f0e8d8 100%);}
+.login-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rxl);padding:32px;width:100%;max-width:420px;box-shadow:var(--shadow-lg);}
+
+/* ============================================================
+   VEL LOGO SVG
+============================================================ */
+.vel-logo-wrap{display:flex;align-items:center;gap:12px;}
+
+/* ============================================================
+   APP SHELL
+============================================================ */
+#app{display:none;height:100%;position:fixed;inset:0;}
+#app.visible{display:flex;flex-direction:column;}
+
+/* DESKTOP SIDEBAR */
+#desktop-sidebar{display:none;flex-direction:column;width:var(--sidebar-w);background:var(--bg2);border-right:1.5px solid var(--border);flex-shrink:0;box-shadow:2px 0 8px rgba(28,22,16,.05);}
+.dsb-logo{padding:20px 16px 16px;border-bottom:1.5px solid var(--border);}
+.dsb-nav{flex:1;padding:12px 8px;overflow-y:auto;}
+.dsb-sec-lbl{font-size:10px;color:var(--text3);padding:12px 12px 5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);cursor:pointer;font-size:13px;color:var(--text2);border:none;background:transparent;width:100%;text-align:left;margin-bottom:2px;font-weight:500;transition:all .15s;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:var(--gold-bg);color:var(--gold);}
+.nav-icon{width:18px;text-align:center;font-size:15px;flex-shrink:0;}
+.dsb-footer{padding:8px;border-top:1.5px solid var(--border);}
+
+/* CONTENT AREA */
+#content-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+#app-header{height:var(--header-h);background:var(--bg2);border-bottom:1.5px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0;box-shadow:0 1px 4px rgba(28,22,16,.06);}
+#header-back{display:none;color:var(--gold);font-size:26px;padding:2px 8px 2px 0;line-height:1;background:none;border:none;font-weight:300;}
 #header-back.show{display:block;}
 #header-title{font-size:15px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #header-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-#header-date{font-size:11px;color:var(--text3);}
-#header-avatar{width:32px;height:32px;border-radius:50%;background:var(--gold-bg);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold);}
-/* Content */
-#page-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:calc(var(--nav-h) + 14px);}
-/* Bottom Nav */
-#bottom-nav{height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;flex-shrink:0;z-index:20;padding-bottom:env(safe-area-inset-bottom);}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--text3);font-size:10px;font-weight:600;border:none;background:none;cursor:pointer;padding:6px 2px;position:relative;transition:color 0.15s;}
+
+/* DESKTOP HEADER */
+#desktop-header{height:var(--header-h);background:var(--bg2);border-bottom:1.5px solid var(--border);display:none;align-items:center;padding:0 24px;gap:12px;box-shadow:0 1px 4px rgba(28,22,16,.06);}
+#dh-title{font-size:16px;font-weight:700;flex:1;}
+#dh-right{display:flex;align-items:center;gap:12px;}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--gold-bg);border:2px solid var(--gold-bdr);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gold);}
+
+/* PAGE CONTENT */
+#page-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:calc(var(--nav-h) + 16px);}
+
+/* BOTTOM NAV */
+#bottom-nav{height:var(--nav-h);background:var(--bg2);border-top:1.5px solid var(--border);display:flex;align-items:stretch;flex-shrink:0;z-index:20;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 8px rgba(28,22,16,.06);}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--text3);font-size:10px;font-weight:600;border:none;background:none;cursor:pointer;padding:6px 2px;position:relative;transition:color .15s;}
 .bnav-btn.active{color:var(--gold);}
-.bnav-icon{font-size:22px;line-height:1.1;}
-.bnav-dot{position:absolute;top:6px;width:5px;height:5px;background:var(--gold);border-radius:50%;display:none;}
-.bnav-btn.active .bnav-dot{display:block;}
-/* More Drawer */
+.bnav-icon{font-size:20px;line-height:1.2;}
+.bnav-bar{position:absolute;top:0;left:25%;right:25%;height:2.5px;background:var(--gold);border-radius:0 0 2px 2px;display:none;}
+.bnav-btn.active .bnav-bar{display:block;}
+
+/* MORE DRAWER */
 #more-drawer{position:fixed;inset:0;z-index:200;display:none;}
 #more-drawer.open{display:block;}
-#drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,0.65);}
-#drawer-panel{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-top-left-radius:var(--radius-xl);border-top-right-radius:var(--radius-xl);border-top:1px solid var(--border2);padding:0 16px calc(var(--nav-h) + 10px);}
-.drawer-handle-wrap{padding:14px 0 8px;display:flex;justify-content:center;}
-.drawer-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;}
-.drawer-row{display:flex;align-items:center;gap:14px;padding:14px 2px;border-bottom:1px solid var(--border);cursor:pointer;}
+#drawer-bg{position:absolute;inset:0;background:rgba(28,22,16,.5);}
+#drawer-panel{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-top:1.5px solid var(--border);border-top-left-radius:var(--rxl);border-top-right-radius:var(--rxl);padding:0 16px calc(var(--nav-h)+8px);box-shadow:var(--shadow-lg);}
+.drawer-row{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--border);cursor:pointer;}
 .drawer-row:last-child{border-bottom:none;}
-.drawer-row:active{background:var(--bg3);border-radius:var(--radius);}
-.drawer-ico{width:40px;height:40px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-/* Route/Customer cards */
-.route-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-bottom:12px;}
-.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
-.mini-box{background:var(--bg3);border-radius:var(--radius);padding:9px;text-align:center;}
-.mini-label{font-size:10px;color:var(--text3);}
-.mini-val{font-size:15px;font-weight:700;margin-top:2px;}
-.cust-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-bottom:10px;}
-.coll-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
-.coll-item.done{border-color:var(--green);background:rgba(34,197,94,0.05);}
-.emp-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-bottom:10px;}
+.drawer-row:active{background:var(--bg3);border-radius:var(--r);}
+.drawer-ico{width:42px;height:42px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+
 /* FAB */
-#fab{display:none;position:fixed;bottom:calc(var(--nav-h) + 16px);right:16px;width:54px;height:54px;border-radius:50%;background:var(--gold);border:none;font-size:26px;color:#1a1200;font-weight:700;z-index:50;box-shadow:0 4px 20px rgba(240,180,41,0.4);cursor:pointer;align-items:center;justify-content:center;}
+#fab{display:none;position:fixed;bottom:calc(var(--nav-h)+16px);right:16px;width:56px;height:56px;border-radius:50%;background:var(--gold);border:none;font-size:26px;color:#fff;font-weight:700;z-index:50;box-shadow:0 4px 20px rgba(184,120,10,.4);cursor:pointer;align-items:center;justify-content:center;transition:transform .15s;}
 #fab.show{display:flex;}
+#fab:hover{transform:scale(1.06);}
+
+/* ============================================================
+   RESPONSIVE GRIDS
+============================================================ */
+.routes-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.mini-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.mini-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px;text-align:center;}
+.mini-lbl{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+.mini-val{font-size:15px;font-weight:700;margin-top:3px;}
+.cust-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow-sm);transition:box-shadow .15s,border-color .15s;}
+.cust-card:hover{box-shadow:var(--shadow);border-color:var(--border2);}
+.cust-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.coll-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);}
+.coll-item.done{border-color:var(--green-bdr);background:var(--green-bg);}
+.emp-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.detail-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+.db-two-col{display:grid;grid-template-columns:1fr;gap:14px;}
+.invoice-layout{display:grid;grid-template-columns:1fr;gap:14px;}
+.add-cust-layout{display:grid;grid-template-columns:1fr;gap:14px;}
+
+@media(min-width:640px){
+  .routes-grid{grid-template-columns:1fr 1fr;}
+  .detail-grid{grid-template-columns:1fr 1fr;}
+  .db-two-col{grid-template-columns:1fr 1fr;}
+  .invoice-layout{grid-template-columns:1fr 1fr;}
+  .add-cust-layout{grid-template-columns:1fr 1fr;}
+  .toast{bottom:24px;}
+  #fab{bottom:24px;}
+}
+@media(min-width:1024px){
+  /* switch to desktop layout */
+  #bottom-nav{display:none;}
+  #more-drawer{display:none!important;}
+  #fab{display:none!important;}
+  #app-header{display:none;}
+  #app.visible{flex-direction:row;}
+  #desktop-sidebar{display:flex;}
+  #desktop-header{display:flex;}
+  #page-content{padding:24px;padding-bottom:24px;}
+  .routes-grid{grid-template-columns:repeat(2,1fr);}
+  .db-two-col{grid-template-columns:1fr 1fr;}
+}
+@media(min-width:1280px){
+  .routes-grid{grid-template-columns:repeat(4,1fr);}
+}
+
+/* ============================================================
+   PRINT
+============================================================ */
 @media print{
-  #app-header,#bottom-nav,#fab,#more-drawer,.no-print{display:none!important;}
-  #page-content{padding:0 !important;overflow:visible !important;}
-  #app{position:static !important;height:auto !important;display:block !important;}
-  body{overflow:auto !important;}
+  #desktop-sidebar,#app-header,#bottom-nav,#fab,#more-drawer,#desktop-header,.no-print{display:none!important;}
+  #page-content{padding:0!important;overflow:visible!important;}
+  #app{position:static!important;height:auto!important;}
+  body{overflow:auto!important;background:#fff;}
+  .card{border:1px solid #ddd;box-shadow:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ======================================================
+     VEL SVG DEFINITION (reusable)
+====================================================== -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="vel-icon" viewBox="0 0 40 80">
+    <!-- Vel spear of Lord Murugan -->
+    <!-- Spear tip (flame) -->
+    <path d="M20 2 L26 18 L20 14 L14 18 Z" fill="url(#velGold)" stroke="#b8780a" stroke-width=".8"/>
+    <!-- Upper blade -->
+    <path d="M20 14 L28 30 L20 26 L12 30 Z" fill="url(#velGold)" stroke="#b8780a" stroke-width=".8"/>
+    <!-- Cross guard / wings -->
+    <path d="M12 32 Q6 30 4 34 Q6 40 12 38 L20 34 L28 38 Q34 40 36 34 Q34 30 28 32 Z" fill="url(#velGold2)" stroke="#b8780a" stroke-width=".8"/>
+    <!-- Shaft -->
+    <rect x="18.5" y="34" width="3" height="32" rx="1.5" fill="url(#velShaft)" stroke="#b8780a" stroke-width=".5"/>
+    <!-- Bottom pommel -->
+    <ellipse cx="20" cy="68" rx="3.5" ry="2.5" fill="url(#velGold)" stroke="#b8780a" stroke-width=".8"/>
+    <ellipse cx="20" cy="70" rx="2.5" ry="1.5" fill="#f0b429"/>
+    <defs>
+      <linearGradient id="velGold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#f0c040"/>
+        <stop offset="50%" stop-color="#d4940f"/>
+        <stop offset="100%" stop-color="#b8780a"/>
+      </linearGradient>
+      <linearGradient id="velGold2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#c8a030"/>
+        <stop offset="50%" stop-color="#f0c040"/>
+        <stop offset="100%" stop-color="#c8a030"/>
+      </linearGradient>
+      <linearGradient id="velShaft" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#b8780a"/>
+        <stop offset="50%" stop-color="#e0a830"/>
+        <stop offset="100%" stop-color="#b8780a"/>
+      </linearGradient>
+    </defs>
+  </symbol>
+</svg>
+
+<!-- ======================================================
+     LOGIN
+====================================================== -->
 <div id="login-screen">
-  <div style="width:100%;max-width:400px">
+  <div class="login-card">
+    <!-- Logo -->
     <div style="text-align:center;margin-bottom:28px">
-      <div style="width:68px;height:68px;background:var(--gold-bg);border:2px solid var(--gold);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:30px;color:var(--gold);font-weight:700">₹</div>
-      <div style="font-size:26px;font-weight:700;color:var(--gold);letter-spacing:-0.5px">Velavan Finance</div>
-      <div style="color:var(--text3);margin-top:5px;font-size:13px">Mayiladuthurai · Thanjavur · Kumbakonam</div>
+      <div style="display:inline-flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="position:relative;width:56px;height:80px">
+          <svg viewBox="0 0 40 80" width="56" height="80" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="vg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5d060"/><stop offset="55%" stop-color="#d4940f"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+              <linearGradient id="vg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8a030"/><stop offset="50%" stop-color="#f0c840"/><stop offset="100%" stop-color="#c8a030"/></linearGradient>
+              <linearGradient id="vg3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a06008"/><stop offset="50%" stop-color="#e0a830"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+            </defs>
+            <!-- flame tip -->
+            <path d="M20 1 L25.5 16 L20 12 L14.5 16 Z" fill="url(#vg1)" stroke="#9a6006" stroke-width=".7"/>
+            <!-- upper blade -->
+            <path d="M20 12 L27 27 L20 23 L13 27 Z" fill="url(#vg1)" stroke="#9a6006" stroke-width=".7"/>
+            <!-- wings / guard -->
+            <path d="M13 30 Q7 28 4 33 Q7 40 13 37 L20 33 L27 37 Q33 40 36 33 Q33 28 27 30 Z" fill="url(#vg2)" stroke="#9a6006" stroke-width=".7"/>
+            <!-- shaft -->
+            <rect x="18.8" y="33" width="2.4" height="33" rx="1.2" fill="url(#vg3)" stroke="#9a6006" stroke-width=".5"/>
+            <!-- pommel cap -->
+            <ellipse cx="20" cy="67.5" rx="3.8" ry="2.5" fill="url(#vg1)" stroke="#9a6006" stroke-width=".7"/>
+            <ellipse cx="20" cy="69.5" rx="2.6" ry="1.6" fill="#f5d060"/>
+            <!-- centre gem on guard -->
+            <ellipse cx="20" cy="33" rx="2" ry="2" fill="#f5d060" stroke="#9a6006" stroke-width=".6"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-size:24px;font-weight:800;color:var(--gold);letter-spacing:-.5px;line-height:1">Velavan Finance</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px;font-weight:500">வேலவன் நிதி நிறுவனம்</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">Mayiladuthurai · Thanjavur · Kumbakonam</div>
+        </div>
+      </div>
     </div>
-    <div class="card" style="padding:24px">
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input id="lu" type="text" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <div class="form-group" style="margin-bottom:18px">
-        <label class="form-label">Password</label>
-        <input id="lp" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <div id="lerr" style="display:none;color:var(--red);font-size:13px;padding:9px 13px;background:var(--red-bg);border-radius:var(--radius);margin-bottom:12px"></div>
-      <button class="btn btn-gold" style="width:100%;padding:14px;font-size:16px;border-radius:var(--radius-lg)" onclick="doLogin()">Sign In</button>
-      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em">Quick Login</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px">
-          <div onclick="fl('admin','admin123')" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:9px 4px;cursor:pointer;text-align:center;active:background:var(--bg4)">
-            <div style="color:var(--gold);font-size:11px;font-weight:700">Admin</div><div style="color:var(--text3);font-size:10px;margin-top:2px">admin</div>
-          </div>
-          <div onclick="fl('dhanush','agent123')" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:9px 4px;cursor:pointer;text-align:center">
-            <div style="color:var(--purple);font-size:11px;font-weight:700">Dhanush</div><div style="color:var(--text3);font-size:10px;margin-top:2px">dhanush</div>
-          </div>
-          <div onclick="fl('jp','agent123')" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:9px 4px;cursor:pointer;text-align:center">
-            <div style="color:var(--purple);font-size:11px;font-weight:700">JP</div><div style="color:var(--text3);font-size:10px;margin-top:2px">jp</div>
-          </div>
-          <div onclick="fl('prakash','agent123')" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:9px 4px;cursor:pointer;text-align:center">
-            <div style="color:var(--purple);font-size:11px;font-weight:700">Prakash</div><div style="color:var(--text3);font-size:10px;margin-top:2px">prakash</div>
-          </div>
+
+    <div class="form-group"><label class="form-label">Username</label><input id="lu" type="text" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="form-group" style="margin-bottom:18px"><label class="form-label">Password</label><input id="lp" type="password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div id="lerr" style="display:none;font-size:13px;padding:10px 14px;background:var(--red-bg);border:1px solid var(--red-bdr);border-radius:var(--r);margin-bottom:14px;color:var(--red);font-weight:600"></div>
+    <button class="btn btn-gold btn-w" style="padding:14px;font-size:16px;border-radius:var(--rl)" onclick="doLogin()">Sign In →</button>
+
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Quick Demo Login</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px">
+        <div onclick="fl('admin','admin123')" style="background:var(--gold-bg);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:9px 4px;cursor:pointer;text-align:center">
+          <div style="color:var(--gold);font-size:11px;font-weight:700">Admin</div><div style="color:var(--text3);font-size:10px;margin-top:2px">admin</div>
+        </div>
+        <div onclick="fl('dhanush','agent123')" style="background:var(--purple-bg);border:1px solid var(--purple-bdr);border-radius:var(--r);padding:9px 4px;cursor:pointer;text-align:center">
+          <div style="color:var(--purple);font-size:11px;font-weight:700">Dhanush</div><div style="color:var(--text3);font-size:10px;margin-top:2px">Rt 1</div>
+        </div>
+        <div onclick="fl('jp','agent123')" style="background:var(--purple-bg);border:1px solid var(--purple-bdr);border-radius:var(--r);padding:9px 4px;cursor:pointer;text-align:center">
+          <div style="color:var(--purple);font-size:11px;font-weight:700">JP</div><div style="color:var(--text3);font-size:10px;margin-top:2px">Rt 2</div>
+        </div>
+        <div onclick="fl('prakash','agent123')" style="background:var(--purple-bg);border:1px solid var(--purple-bdr);border-radius:var(--r);padding:9px 4px;cursor:pointer;text-align:center">
+          <div style="color:var(--purple);font-size:11px;font-weight:700">Prakash</div><div style="color:var(--text3);font-size:10px;margin-top:2px">Rt 3&4</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- APP -->
+<!-- ======================================================
+     APP
+====================================================== -->
 <div id="app">
 
-  <div id="app-header">
-    <button id="header-back" onclick="goBack()">‹</button>
-    <div id="header-title">Dashboard</div>
-    <div id="header-right">
-      <span id="header-date"></span>
-      <div id="header-avatar"></div>
-    </div>
-  </div>
-
-  <div id="page-content">
-
-    <!-- DASHBOARD -->
-    <div id="page-dashboard" class="page active">
-      <div id="db-stats" class="stat-grid" style="margin-bottom:14px"></div>
-      <div class="card" style="margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:11px">Routes</div>
-        <div id="db-routes"></div>
-      </div>
-      <div class="card" style="margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:11px">Overdue Accounts</div>
-        <div id="db-overdue"></div>
-      </div>
-      <div class="card">
-        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:11px">Recent Payments</div>
-        <div id="db-recent"></div>
+  <!-- DESKTOP SIDEBAR -->
+  <aside id="desktop-sidebar">
+    <div class="dsb-logo">
+      <div style="display:flex;align-items:center;gap:10px">
+        <svg viewBox="0 0 40 80" width="28" height="50" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+          <defs>
+            <linearGradient id="sg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5d060"/><stop offset="55%" stop-color="#d4940f"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+            <linearGradient id="sg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8a030"/><stop offset="50%" stop-color="#f0c840"/><stop offset="100%" stop-color="#c8a030"/></linearGradient>
+            <linearGradient id="sg3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a06008"/><stop offset="50%" stop-color="#e0a830"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+          </defs>
+          <path d="M20 1 L25.5 16 L20 12 L14.5 16 Z" fill="url(#sg1)" stroke="#9a6006" stroke-width=".7"/>
+          <path d="M20 12 L27 27 L20 23 L13 27 Z" fill="url(#sg1)" stroke="#9a6006" stroke-width=".7"/>
+          <path d="M13 30 Q7 28 4 33 Q7 40 13 37 L20 33 L27 37 Q33 40 36 33 Q33 28 27 30 Z" fill="url(#sg2)" stroke="#9a6006" stroke-width=".7"/>
+          <rect x="18.8" y="33" width="2.4" height="33" rx="1.2" fill="url(#sg3)" stroke="#9a6006" stroke-width=".5"/>
+          <ellipse cx="20" cy="67.5" rx="3.8" ry="2.5" fill="url(#sg1)" stroke="#9a6006" stroke-width=".7"/>
+          <ellipse cx="20" cy="69.5" rx="2.6" ry="1.6" fill="#f5d060"/>
+          <ellipse cx="20" cy="33" rx="2" ry="2" fill="#f5d060" stroke="#9a6006" stroke-width=".6"/>
+        </svg>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:var(--gold)">Velavan Finance</div>
+          <div id="sb-user-lbl" style="font-size:10px;color:var(--text3);margin-top:1px"></div>
+        </div>
       </div>
     </div>
-
-    <!-- ROUTES -->
-    <div id="page-routes" class="page"><div id="routes-list"></div></div>
-
-    <!-- ROUTE DETAIL -->
-    <div id="page-route-detail" class="page"><div id="route-detail-content"></div></div>
-
-    <!-- CUSTOMERS -->
-    <div id="page-customers" class="page">
-      <input id="cs-search" type="search" placeholder="🔍  Search shop, owner, phone…" oninput="renderCustomers()" style="margin-bottom:10px"/>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <select id="cs-route" onchange="renderCustomers()"><option value="">All Routes</option></select>
-        <select id="cs-status" onchange="renderCustomers()">
-          <option value="">All Status</option>
-          <option value="active">Active</option>
-          <option value="overdue">Overdue</option>
-          <option value="completed">Completed</option>
-        </select>
+    <nav class="dsb-nav">
+      <div class="dsb-sec-lbl">Main</div>
+      <button class="nav-item active" id="ni-dashboard" onclick="showPage('dashboard')"><span class="nav-icon">⊞</span>Dashboard</button>
+      <button class="nav-item" id="ni-routes" onclick="showPage('routes')"><span class="nav-icon">◈</span>Routes</button>
+      <button class="nav-item" id="ni-customers" onclick="showPage('customers')"><span class="nav-icon">👥</span>Customers</button>
+      <button class="nav-item" id="ni-collection" onclick="showPage('collection')"><span class="nav-icon">₹</span>Daily Collection</button>
+      <div class="dsb-sec-lbl">Reports</div>
+      <button class="nav-item" id="ni-payments" onclick="showPage('payments')"><span class="nav-icon">📋</span>Payment History</button>
+      <button class="nav-item" id="ni-invoice" onclick="showPage('invoice')"><span class="nav-icon">🧾</span>Invoice / Receipt</button>
+      <div id="sb-admin-sec" style="display:none">
+        <div class="dsb-sec-lbl">Admin</div>
+        <button class="nav-item" id="ni-employees" onclick="showPage('employees')"><span class="nav-icon">⚙</span>Employees</button>
+        <button class="nav-item" id="ni-add-customer" onclick="showPage('add-customer')"><span class="nav-icon">✚</span>Add Customer</button>
       </div>
-      <div id="customers-list"></div>
+    </nav>
+    <div class="dsb-footer">
+      <button class="nav-item" onclick="logout()" style="color:var(--red)"><span class="nav-icon">⊗</span>Sign Out</button>
     </div>
+  </aside>
 
-    <!-- CUSTOMER DETAIL -->
-    <div id="page-customer-detail" class="page"><div id="cust-detail"></div></div>
+  <!-- CONTENT AREA -->
+  <div id="content-wrap">
 
-    <!-- COLLECTION -->
-    <div id="page-collection" class="page">
-      <select id="coll-route" onchange="renderCollection()" style="margin-bottom:12px"></select>
-      <div id="coll-stats" class="stat-grid" style="margin-bottom:14px"></div>
-      <div id="coll-list"></div>
-    </div>
-
-    <!-- PAYMENTS -->
-    <div id="page-payments" class="page">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <select id="pay-route" onchange="renderPayments()"><option value="">All Routes</option></select>
-        <select id="pay-cust" onchange="renderPayments()"><option value="">All Customers</option></select>
+    <!-- MOBILE HEADER -->
+    <div id="app-header">
+      <button id="header-back" onclick="goBack()">‹</button>
+      <!-- Mobile vel logo inline -->
+      <div style="display:flex;align-items:center;gap:7px;flex:1;overflow:hidden">
+        <svg viewBox="0 0 40 80" width="16" height="28" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+          <defs>
+            <linearGradient id="mhg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5d060"/><stop offset="55%" stop-color="#d4940f"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+            <linearGradient id="mhg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8a030"/><stop offset="50%" stop-color="#f0c840"/><stop offset="100%" stop-color="#c8a030"/></linearGradient>
+            <linearGradient id="mhg3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a06008"/><stop offset="50%" stop-color="#e0a830"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+          </defs>
+          <path d="M20 1 L25.5 16 L20 12 L14.5 16 Z" fill="url(#mhg1)" stroke="#9a6006" stroke-width=".7"/>
+          <path d="M20 12 L27 27 L20 23 L13 27 Z" fill="url(#mhg1)" stroke="#9a6006" stroke-width=".7"/>
+          <path d="M13 30 Q7 28 4 33 Q7 40 13 37 L20 33 L27 37 Q33 40 36 33 Q33 28 27 30 Z" fill="url(#mhg2)" stroke="#9a6006" stroke-width=".7"/>
+          <rect x="18.8" y="33" width="2.4" height="33" rx="1.2" fill="url(#mhg3)" stroke="#9a6006" stroke-width=".5"/>
+          <ellipse cx="20" cy="67.5" rx="3.8" ry="2.5" fill="url(#mhg1)" stroke="#9a6006" stroke-width=".7"/>
+          <ellipse cx="20" cy="69.5" rx="2.6" ry="1.6" fill="#f5d060"/>
+          <ellipse cx="20" cy="33" rx="2" ry="2" fill="#f5d060" stroke="#9a6006" stroke-width=".6"/>
+        </svg>
+        <div id="header-title" style="font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dashboard</div>
       </div>
-      <div id="pay-list"></div>
+      <div id="header-right">
+        <span id="header-date" style="font-size:11px;color:var(--text3)"></span>
+        <div id="header-avatar" class="avatar"></div>
+      </div>
     </div>
 
-    <!-- INVOICE -->
-    <div id="page-invoice" class="page">
-      <div class="card" style="margin-bottom:14px">
-        <div class="form-group"><label class="form-label">Customer</label><select id="inv-cust" onchange="updateInvoice()"><option value="">Select customer…</option></select></div>
-        <div class="form-group"><label class="form-label">Document Type</label>
-          <select id="inv-type" onchange="updateInvoice()">
-            <option value="receipt">Daily Receipt</option>
-            <option value="statement">Loan Statement</option>
-            <option value="noc">NOC / Clearance</option>
+    <!-- DESKTOP HEADER -->
+    <div id="desktop-header">
+      <div id="dh-title">Dashboard</div>
+      <div id="dh-right">
+        <span id="dh-date" style="font-size:12px;color:var(--text3)"></span>
+        <div id="dh-avatar" class="avatar"></div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div id="page-content">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page active">
+        <div id="db-stats" class="stats-4" style="margin-bottom:16px"></div>
+        <div class="db-two-col" style="margin-bottom:14px">
+          <div class="card"><div class="section-title">Routes Overview</div><div id="db-routes"></div></div>
+          <div class="card"><div class="section-title">Overdue Accounts</div><div id="db-overdue"></div></div>
+        </div>
+        <div class="card"><div class="section-title">Recent Payments</div><div id="db-recent"></div></div>
+      </div>
+
+      <!-- ROUTES -->
+      <div id="page-routes" class="page"><div id="routes-list" class="routes-grid"></div></div>
+
+      <!-- ROUTE DETAIL -->
+      <div id="page-route-detail" class="page"><div id="route-detail-content"></div></div>
+
+      <!-- CUSTOMERS -->
+      <div id="page-customers" class="page">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+          <input id="cs-search" type="search" placeholder="🔍  Search shop, owner, phone…" oninput="renderCustomers()" style="flex:1;min-width:160px"/>
+          <select id="cs-route" onchange="renderCustomers()" style="flex:1;min-width:140px;max-width:210px"><option value="">All Routes</option></select>
+          <select id="cs-status" onchange="renderCustomers()" style="width:140px">
+            <option value="">All Status</option><option value="active">Active</option>
+            <option value="overdue">Overdue</option><option value="completed">Completed</option>
           </select>
         </div>
-        <button class="btn btn-gold" style="width:100%;padding:13px" onclick="window.print()">🖨  Print / Save PDF</button>
+        <div id="customers-cards"></div>
+        <div id="customers-table" style="display:none"><div class="table-wrap"><table><thead><tr>
+          <th>Shop</th><th>Route</th><th>Phone</th><th>Loan</th><th>Daily EMI</th><th>Balance</th><th>Status</th><th></th>
+        </tr></thead><tbody id="customers-tbody"></tbody></table></div></div>
       </div>
-      <div id="inv-preview"></div>
-    </div>
 
-    <!-- EMPLOYEES (admin) -->
-    <div id="page-employees" class="page">
-      <div class="tabs" style="margin-bottom:14px">
-        <div class="tab active" id="etab-list" onclick="empTab('list')">Employees</div>
-        <div class="tab" id="etab-access" onclick="empTab('access')">Route Access</div>
+      <!-- CUSTOMER DETAIL -->
+      <div id="page-customer-detail" class="page"><div id="cust-detail"></div></div>
+
+      <!-- COLLECTION -->
+      <div id="page-collection" class="page">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <select id="coll-route" onchange="renderColl()" style="min-width:200px;flex:1;max-width:300px"></select>
+          <div style="flex:1;min-width:160px">
+            <div class="progress-bar"><div id="coll-bar" class="progress-fill" style="width:0%"></div></div>
+            <div id="coll-pct" style="font-size:11px;color:var(--text3);margin-top:4px;text-align:right;font-weight:600">0% collected</div>
+          </div>
+        </div>
+        <div id="coll-stats" class="stats-4" style="margin-bottom:14px"></div>
+        <div id="coll-cards"></div>
+        <div id="coll-table" style="display:none"><div class="table-wrap"><table><thead><tr>
+          <th>Shop</th><th>Owner</th><th>Daily EMI</th><th>Balance</th><th>Status</th><th>Action</th>
+        </tr></thead><tbody id="coll-tbody"></tbody></table></div></div>
       </div>
-      <div id="emp-list-wrap"></div>
-      <div id="emp-access-wrap" style="display:none"></div>
-    </div>
 
-    <!-- ADD CUSTOMER (admin) -->
-    <div id="page-add-customer" class="page">
-      <div class="card" style="margin-bottom:13px">
-        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px">Customer Info</div>
-        <div class="form-group"><label class="form-label">Shop / Business Name *</label><input id="ac-shop" type="text" placeholder="e.g. Murugan Textiles"/></div>
-        <div class="form-group"><label class="form-label">Owner Name *</label><input id="ac-owner" type="text" placeholder="Full name"/></div>
-        <div class="form-group"><label class="form-label">Phone Number *</label><input id="ac-phone" type="tel" placeholder="10-digit mobile"/></div>
-        <div class="form-group"><label class="form-label">Address</label><textarea id="ac-address" rows="2" placeholder="Shop address…"></textarea></div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Route *</label><select id="ac-route"><option value="">Select…</option></select></div>
-          <div class="form-group"><label class="form-label">Assign Agent</label><select id="ac-agent"><option value="">Select…</option></select></div>
+      <!-- PAYMENTS -->
+      <div id="page-payments" class="page">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+          <select id="pay-route" onchange="renderPays()" style="flex:1;min-width:140px;max-width:220px"><option value="">All Routes</option></select>
+          <select id="pay-cust" onchange="renderPays()" style="flex:1;min-width:140px;max-width:220px"><option value="">All Customers</option></select>
+        </div>
+        <div id="pay-cards"></div>
+        <div id="pay-table" style="display:none"><div class="table-wrap"><table><thead><tr>
+          <th>Date</th><th>Customer</th><th>Route</th><th>Amount</th><th>Method</th><th>Collector</th>
+        </tr></thead><tbody id="pay-tbody"></tbody></table></div></div>
+      </div>
+
+      <!-- INVOICE -->
+      <div id="page-invoice" class="page">
+        <div class="invoice-layout">
+          <div class="card">
+            <div class="section-title">Generate Document</div>
+            <div class="form-group"><label class="form-label">Customer</label><select id="inv-cust" onchange="updateInvoice()"><option value="">Select customer…</option></select></div>
+            <div class="form-group"><label class="form-label">Document Type</label>
+              <select id="inv-type" onchange="updateInvoice()">
+                <option value="receipt">Daily Receipt</option>
+                <option value="statement">Loan Statement</option>
+                <option value="noc">NOC / Clearance</option>
+              </select>
+            </div>
+            <button class="btn btn-gold btn-w" style="padding:13px" onclick="window.print()">🖨 Print / Save PDF</button>
+          </div>
+          <div id="inv-preview" class="card"></div>
         </div>
       </div>
-      <div class="card">
-        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px">Loan Setup</div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Amount (₹) *</label><input id="ac-loan" type="number" placeholder="50000" oninput="calcLoan()"/></div>
-          <div class="form-group"><label class="form-label">Interest (%)</label><input id="ac-int" type="number" placeholder="15" value="15" oninput="calcLoan()"/></div>
+
+      <!-- EMPLOYEES -->
+      <div id="page-employees" class="page">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap">
+          <div class="tabs" style="flex:1;max-width:320px">
+            <div class="tab active" id="etab-list" onclick="empTab('list')">Employees</div>
+            <div class="tab" id="etab-access" onclick="empTab('access')">Route Access</div>
+          </div>
+          <button class="btn btn-gold" onclick="openAddEmp()">+ Add Employee</button>
         </div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Tenure (days)</label><input id="ac-days" type="number" placeholder="100" value="100" oninput="calcLoan()"/></div>
-          <div class="form-group"><label class="form-label">Start Date</label><input id="ac-date" type="date"/></div>
-        </div>
-        <div id="lc-box" class="calc-box" style="display:none;margin-bottom:14px">
-          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">Summary</div>
-          <div class="calc-row"><span style="color:var(--text2)">Principal</span><span id="lc-p">—</span></div>
-          <div class="calc-row"><span style="color:var(--text2)">Interest</span><span id="lc-i">—</span></div>
-          <div class="calc-row"><span style="color:var(--text2)">Total Payable</span><span style="font-weight:700" id="lc-t">—</span></div>
-          <div class="calc-row"><span style="color:var(--text2)">Daily Collection</span><span style="color:var(--gold);font-weight:700" id="lc-d">—</span></div>
-        </div>
-        <div id="ac-ok" style="display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:var(--radius);padding:11px;margin-bottom:13px;color:var(--green);font-weight:700;text-align:center">✓ Customer Added!</div>
-        <button class="btn btn-gold" style="width:100%;padding:14px;font-size:16px" onclick="addCustomer()">Add Customer</button>
+        <div id="emp-list-wrap"></div>
+        <div id="emp-access-wrap" style="display:none"></div>
       </div>
-    </div>
 
-  </div><!-- /page-content -->
+      <!-- ADD CUSTOMER -->
+      <div id="page-add-customer" class="page">
+        <div class="add-cust-layout">
+          <div class="card">
+            <div class="section-title">Customer Information</div>
+            <div class="form-group"><label class="form-label">Shop / Business Name *</label><input id="ac-shop" type="text" placeholder="e.g. Murugan Textiles"/></div>
+            <div class="form-group"><label class="form-label">Owner Name *</label><input id="ac-owner" type="text" placeholder="Full name"/></div>
+            <div class="form-group"><label class="form-label">Phone *</label><input id="ac-phone" type="tel" placeholder="10-digit mobile"/></div>
+            <div class="form-group"><label class="form-label">Address</label><textarea id="ac-address" rows="2" placeholder="Shop address…"></textarea></div>
+            <div class="form-row-2">
+              <div class="form-group"><label class="form-label">Route *</label><select id="ac-route"><option value="">Select…</option></select></div>
+              <div class="form-group"><label class="form-label">Assign Agent</label><select id="ac-agent"><option value="">Select…</option></select></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">Loan Configuration</div>
+            <div class="form-row-2">
+              <div class="form-group"><label class="form-label">Amount (₹) *</label><input id="ac-loan" type="number" placeholder="50000" oninput="calcLoan()"/></div>
+              <div class="form-group"><label class="form-label">Interest (%)</label><input id="ac-int" type="number" value="15" oninput="calcLoan()"/></div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label class="form-label">Tenure (days)</label><input id="ac-days" type="number" value="100" oninput="calcLoan()"/></div>
+              <div class="form-group"><label class="form-label">Start Date</label><input id="ac-date" type="date"/></div>
+            </div>
+            <div id="lc-box" class="calc-box" style="display:none;margin-bottom:14px">
+              <div class="section-title" style="margin-bottom:8px">Calculation Summary</div>
+              <div class="calc-row"><span style="color:var(--text2)">Principal</span><span id="lc-p">—</span></div>
+              <div class="calc-row"><span style="color:var(--text2)">Interest Amount</span><span id="lc-i">—</span></div>
+              <div class="calc-row"><span style="color:var(--text2)">Total Payable</span><span style="font-weight:700" id="lc-t">—</span></div>
+              <div class="calc-row"><span style="color:var(--text2)">Daily Collection</span><span style="color:var(--gold);font-weight:700" id="lc-d">—</span></div>
+            </div>
+            <div id="ac-ok" style="display:none;background:var(--green-bg);border:1px solid var(--green-bdr);border-radius:var(--r);padding:12px;margin-bottom:13px;color:var(--green);font-weight:700;text-align:center">✓ Customer Added Successfully!</div>
+            <button class="btn btn-gold btn-w" style="padding:14px;font-size:16px" onclick="addCustomer()">Add Customer</button>
+          </div>
+        </div>
+      </div>
 
-  <!-- BOTTOM NAV -->
-  <nav id="bottom-nav">
-    <button class="bnav-btn active" id="bn-dashboard" onclick="showPage('dashboard')">
-      <span class="bnav-dot"></span><span class="bnav-icon">⊞</span><span>Home</span>
-    </button>
-    <button class="bnav-btn" id="bn-routes" onclick="showPage('routes')">
-      <span class="bnav-dot"></span><span class="bnav-icon">◈</span><span>Routes</span>
-    </button>
-    <button class="bnav-btn" id="bn-collection" onclick="showPage('collection')">
-      <span class="bnav-dot"></span><span class="bnav-icon">₹</span><span>Collect</span>
-    </button>
-    <button class="bnav-btn" id="bn-customers" onclick="showPage('customers')">
-      <span class="bnav-dot"></span><span class="bnav-icon">👥</span><span>Customers</span>
-    </button>
-    <button class="bnav-btn" id="bn-more" onclick="toggleDrawer()">
-      <span class="bnav-dot"></span><span class="bnav-icon">⋯</span><span>More</span>
-    </button>
-  </nav>
+    </div><!-- /page-content -->
 
+    <!-- MOBILE BOTTOM NAV -->
+    <nav id="bottom-nav">
+      <button class="bnav-btn active" id="bn-dashboard" onclick="showPage('dashboard')">
+        <span class="bnav-bar"></span><span class="bnav-icon">⊞</span><span>Home</span>
+      </button>
+      <button class="bnav-btn" id="bn-routes" onclick="showPage('routes')">
+        <span class="bnav-bar"></span><span class="bnav-icon">◈</span><span>Routes</span>
+      </button>
+      <button class="bnav-btn" id="bn-collection" onclick="showPage('collection')">
+        <span class="bnav-bar"></span><span class="bnav-icon">₹</span><span>Collect</span>
+      </button>
+      <button class="bnav-btn" id="bn-customers" onclick="showPage('customers')">
+        <span class="bnav-bar"></span><span class="bnav-icon">👥</span><span>Customers</span>
+      </button>
+      <button class="bnav-btn" id="bn-more" onclick="toggleDrawer()">
+        <span class="bnav-bar"></span><span class="bnav-icon">⋯</span><span>More</span>
+      </button>
+    </nav>
+
+  </div><!-- /content-wrap -->
 </div><!-- /app -->
 
 <!-- FAB -->
@@ -330,24 +632,23 @@ button{cursor:pointer;font-family:inherit;font-size:14px;border:none;background:
 <div id="more-drawer">
   <div id="drawer-bg" onclick="closeDrawer()"></div>
   <div id="drawer-panel">
-    <div class="drawer-handle-wrap"><div class="drawer-handle"></div></div>
+    <div style="padding:14px 0 8px;display:flex;justify-content:center"><div style="width:40px;height:4px;background:var(--border2);border-radius:2px"></div></div>
     <div class="drawer-row" onclick="closeDrawer();showPage('payments')">
-      <div class="drawer-ico">📋</div>
-      <div><div style="font-weight:600">Payment History</div><div style="font-size:12px;color:var(--text3)">All collected payments</div></div>
+      <div class="drawer-ico">📋</div><div><div style="font-weight:600">Payment History</div><div style="font-size:12px;color:var(--text3)">All collections</div></div>
     </div>
     <div class="drawer-row" onclick="closeDrawer();showPage('invoice')">
-      <div class="drawer-ico">🧾</div>
-      <div><div style="font-weight:600">Invoice & Receipt</div><div style="font-size:12px;color:var(--text3)">Receipts, statements, NOC</div></div>
+      <div class="drawer-ico">🧾</div><div><div style="font-weight:600">Invoice & Receipt</div><div style="font-size:12px;color:var(--text3)">Receipts, statements, NOC</div></div>
     </div>
     <div id="admin-drawer" style="display:none">
       <div class="drawer-row" onclick="closeDrawer();showPage('employees')">
-        <div class="drawer-ico">⚙</div>
-        <div><div style="font-weight:600">Employees</div><div style="font-size:12px;color:var(--text3)">Manage staff & route access</div></div>
+        <div class="drawer-ico">⚙</div><div><div style="font-weight:600">Employees</div><div style="font-size:12px;color:var(--text3)">Staff & route access</div></div>
+      </div>
+      <div class="drawer-row" onclick="closeDrawer();showPage('add-customer')">
+        <div class="drawer-ico">✚</div><div><div style="font-weight:600">Add Customer</div><div style="font-size:12px;color:var(--text3)">Register new loan</div></div>
       </div>
     </div>
     <div class="drawer-row" onclick="closeDrawer();logout()" style="color:var(--red)">
-      <div class="drawer-ico">⊗</div>
-      <div><div style="font-weight:600">Sign Out</div></div>
+      <div class="drawer-ico" style="color:var(--red)">⊗</div><div style="font-weight:600">Sign Out</div>
     </div>
   </div>
 </div>
@@ -355,49 +656,43 @@ button{cursor:pointer;font-family:inherit;font-size:14px;border:none;background:
 <!-- MODAL: Add Employee -->
 <div class="modal-overlay" id="m-emp">
   <div class="modal">
-    <div class="modal-handle-wrap"><div class="modal-handle"></div></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div style="font-size:17px;font-weight:700">Add Employee</div>
-      <button onclick="closeModal('m-emp')" style="color:var(--text3);font-size:22px;padding:2px 8px">✕</button>
-    </div>
+    <div class="modal-handle-row"><div class="modal-handle"></div></div>
+    <div class="modal-head"><h2>Add Employee</h2><button class="modal-close" onclick="closeModal('m-emp')">✕</button></div>
     <div class="form-group"><label class="form-label">Full Name *</label><input id="en" type="text" placeholder="Employee name"/></div>
     <div class="form-group"><label class="form-label">Phone</label><input id="ep" type="tel" placeholder="Mobile number"/></div>
-    <div class="form-row">
+    <div class="form-row-2">
       <div class="form-group"><label class="form-label">Username *</label><input id="eu" type="text" placeholder="login id"/></div>
-      <div class="form-group"><label class="form-label">Password *</label><input id="epw" type="password" placeholder="set password"/></div>
+      <div class="form-group"><label class="form-label">Password *</label><input id="epw" type="password" placeholder="password"/></div>
     </div>
-    <div class="form-group"><label class="form-label">Role</label>
-      <select id="er"><option value="agent">Field Agent</option><option value="supervisor">Supervisor</option><option value="admin">Admin</option></select>
+    <div class="form-row-2">
+      <div class="form-group"><label class="form-label">Role</label><select id="er"><option value="agent">Field Agent</option><option value="supervisor">Supervisor</option><option value="admin">Admin</option></select></div>
+      <div class="form-group"><label class="form-label">Assign Route</label><select id="ert"><option value="">No route</option></select></div>
     </div>
-    <div class="form-group"><label class="form-label">Assign Route</label>
-      <select id="ert"><option value="">No route</option></select>
-    </div>
-    <button class="btn btn-gold" style="width:100%;padding:13px;margin-top:4px" onclick="saveEmp()">Save Employee</button>
+    <button class="btn btn-gold btn-w" style="padding:13px;margin-top:4px" onclick="saveEmp()">Save Employee</button>
   </div>
 </div>
 
 <!-- MODAL: Route Access -->
 <div class="modal-overlay" id="m-access">
   <div class="modal">
-    <div class="modal-handle-wrap"><div class="modal-handle"></div></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div id="m-access-title" style="font-size:17px;font-weight:700"></div>
-      <button onclick="closeModal('m-access')" style="color:var(--text3);font-size:22px;padding:2px 8px">✕</button>
-    </div>
+    <div class="modal-handle-row"><div class="modal-handle"></div></div>
+    <div class="modal-head"><h2 id="m-access-title"></h2><button class="modal-close" onclick="closeModal('m-access')">✕</button></div>
     <div id="m-access-body"></div>
-    <button class="btn btn-gold" style="width:100%;padding:13px;margin-top:12px" onclick="closeModal('m-access')">Done</button>
+    <button class="btn btn-gold btn-w" style="padding:13px;margin-top:14px" onclick="closeModal('m-access')">Done</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- ======================================================
+     JAVASCRIPT
+====================================================== -->
 <script>
-// ===== DATA =====
 const ROUTES=[
-  {id:1,name:"Route 1 – Mayiladuthurai",short:"Mayiladuthurai",area:"Mayiladuthurai"},
-  {id:2,name:"Route 2 – Thanjavur",short:"Thanjavur",area:"Thanjavur"},
-  {id:3,name:"Route 3 – Kumbakonam",short:"Kumbakonam",area:"Kumbakonam"},
-  {id:4,name:"Route 4 – Kumbakonam Local",short:"Kumbakonam Local",area:"Kumbakonam"},
+  {id:1,name:"Route 1 – Mayiladuthurai",short:"Mayiladuthurai"},
+  {id:2,name:"Route 2 – Thanjavur",short:"Thanjavur"},
+  {id:3,name:"Route 3 – Kumbakonam",short:"Kumbakonam"},
+  {id:4,name:"Route 4 – Kumbakonam Local",short:"Kumbakonam Local"},
 ];
 let EMPLOYEES=[
   {id:1,name:"Admin Velavan",username:"admin",password:"admin123",phone:"98765 00001",role:"admin",routeIds:[1,2,3,4],status:"active"},
@@ -426,35 +721,42 @@ let CUSTOMERS=[
   {id:403,routeId:4,shop:"Kumar Electronics",owner:"Kumar A",phone:"94004 44003",address:"Railway St, Kumbakonam",loanAmt:35000,interest:15,tenure:100,disbursed:"2025-03-01",status:"active"},
   {id:404,routeId:4,shop:"Veni Sarees",owner:"Veni S",phone:"94004 44004",address:"Old Town, Kumbakonam",loanAmt:28000,interest:15,tenure:100,disbursed:"2025-02-10",status:"overdue"},
 ];
+
 const TODAY=new Date();
 CUSTOMERS.forEach(c=>{
   const t=Math.round(c.loanAmt*(1+c.interest/100));
-  c.totalPayable=t;c.dailyEmi=Math.round(t/c.tenure);
+  c.totalPayable=t; c.dailyEmi=Math.round(t/c.tenure);
   const elapsed=Math.max(0,Math.min(c.tenure,Math.floor((TODAY-new Date(c.disbursed))/86400000)));
   c.collected=c.status==="completed"?t:elapsed*c.dailyEmi;
   c.due=c.status==="completed"?0:Math.max(0,t-c.collected);
 });
 let PAYMENTS=[];
 CUSTOMERS.forEach(c=>{
-  const disbDate=new Date(c.disbursed);
-  const elapsed=Math.max(0,Math.floor((TODAY-disbDate)/86400000));
-  const days=Math.min(elapsed,c.tenure);
-  const r=ROUTES.find(r=>r.id===c.routeId);
-  const ags=EMPLOYEES.filter(e=>e.routeIds&&e.routeIds.includes(c.routeId)&&e.role==="agent");
-  const ag=ags.length?ags[0].name:"Agent";
+  const dDate=new Date(c.disbursed),days=Math.min(Math.max(0,Math.floor((TODAY-dDate)/86400000)),c.tenure);
+  const r=ROUTES.find(r=>r.id===c.routeId),ag=EMPLOYEES.find(e=>e.routeIds&&e.routeIds.includes(c.routeId)&&e.role==="agent");
   for(let i=0;i<Math.min(days,15);i++){
     if(c.status==="overdue"&&i>=days-3)continue;
-    const d=new Date(disbDate);d.setDate(d.getDate()+i);
-    PAYMENTS.push({id:PAYMENTS.length+1,date:d.toISOString().split("T")[0],cid:c.id,cname:c.shop,rid:c.routeId,rname:r?r.short:"",amount:c.dailyEmi,method:i%3===0?"UPI":"Cash",collector:ag});
+    const d=new Date(dDate);d.setDate(d.getDate()+i);
+    PAYMENTS.push({id:PAYMENTS.length+1,date:d.toISOString().split("T")[0],cid:c.id,cname:c.shop,rid:c.routeId,rname:r?r.short:"",amount:c.dailyEmi,method:i%3===0?"UPI":"Cash",collector:ag?ag.name:"Agent"});
   }
 });
 PAYMENTS.sort((a,b)=>b.date.localeCompare(a.date));
-let COLL_MARKED={};
-let CU=null;
-let PAGE_STACK=[];
-let CUR_PAGE="dashboard";
+let COLL={},CU=null,PAGE_STACK=[],CUR="dashboard";
 
-// ===== AUTH =====
+// ---- RESPONSIVE ----
+const isDesktop=()=>window.innerWidth>=1024;
+const isTablet=()=>window.innerWidth>=640;
+function applyResponsive(){
+  const d=isDesktop(),t=isTablet();
+  const toggle=(cid,tid,showTable)=>{const cc=document.getElementById(cid),ct=document.getElementById(tid);if(cc&&ct){cc.style.display=showTable?"none":"block";ct.style.display=showTable?"block":"none";}};
+  toggle("customers-cards","customers-table",t);
+  toggle("coll-cards","coll-table",d);
+  toggle("pay-cards","pay-table",t);
+  if(document.getElementById("desktop-header"))document.getElementById("desktop-header").style.display=d?"flex":"none";
+}
+window.addEventListener("resize",()=>{applyResponsive();renderCurPage();});
+
+// ---- AUTH ----
 function doLogin(){
   const u=document.getElementById("lu").value.trim(),p=document.getElementById("lp").value.trim();
   const e=EMPLOYEES.find(x=>x.username===u&&x.password===p&&x.status==="active");
@@ -462,71 +764,82 @@ function doLogin(){
   CU=e;
   document.getElementById("login-screen").style.display="none";
   const app=document.getElementById("app");app.style.display="flex";app.classList.add("visible");
-  document.getElementById("header-avatar").textContent=e.name.split(" ").map(x=>x[0]).join("").substring(0,2).toUpperCase();
+  const av=ini(e.name);
+  document.getElementById("header-avatar").textContent=av;
+  document.getElementById("dh-avatar").textContent=av;
+  document.getElementById("sb-user-lbl").textContent=e.name+" · "+uc(e.role);
+  const dstr=TODAY.toLocaleDateString("en-IN",{weekday:"short",day:"2-digit",month:"short",year:"numeric"});
   document.getElementById("header-date").textContent=TODAY.toLocaleDateString("en-IN",{day:"2-digit",month:"short"});
+  document.getElementById("dh-date").textContent=dstr;
   if(e.role==="admin"||e.role==="supervisor"){
-    document.getElementById("fab").classList.add("show");
+    document.getElementById("sb-admin-sec").style.display="block";
     document.getElementById("admin-drawer").style.display="block";
+    document.getElementById("fab").classList.add("show");
   }
-  populateSels();showPage("dashboard");
+  populateSels(); applyResponsive(); showPage("dashboard");
 }
 function fl(u,p){document.getElementById("lu").value=u;document.getElementById("lp").value=p;}
 function logout(){
-  CU=null;PAGE_STACK=[];COLL_MARKED={};
+  CU=null;PAGE_STACK=[];COLL={};
   document.getElementById("app").classList.remove("visible");
   document.getElementById("app").style.display="none";
   document.getElementById("login-screen").style.display="flex";
   document.getElementById("lu").value="";document.getElementById("lp").value="";
   document.getElementById("fab").classList.remove("show");
+  document.getElementById("sb-admin-sec").style.display="none";
   document.getElementById("admin-drawer").style.display="none";
 }
 
-// ===== NAV =====
-const TITLES={dashboard:"Dashboard",routes:"Routes","route-detail":"Route",customers:"Customers","customer-detail":"Customer",collection:"Daily Collection",payments:"Payments",invoice:"Invoice",employees:"Employees","add-customer":"Add Customer"};
+// ---- NAV ----
+const TITLES={dashboard:"Dashboard",routes:"Routes","route-detail":"Route Detail",customers:"Customers","customer-detail":"Customer Detail",collection:"Daily Collection",payments:"Payment History",invoice:"Invoice / Receipt",employees:"Employees","add-customer":"Add Customer"};
 const BNAV={dashboard:"dashboard",routes:"routes","route-detail":"routes",customers:"customers","customer-detail":"customers",collection:"collection"};
 function showPage(id,push=true){
-  if(push&&id!==CUR_PAGE)PAGE_STACK.push(CUR_PAGE);
-  CUR_PAGE=id;
+  if(push&&id!==CUR)PAGE_STACK.push(CUR);
+  CUR=id;
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".bnav-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
   const pg=document.getElementById("page-"+id);if(pg){pg.classList.add("active");document.getElementById("page-content").scrollTop=0;}
   const bn=document.getElementById("bn-"+(BNAV[id]||""));if(bn)bn.classList.add("active");
-  document.getElementById("header-title").textContent=TITLES[id]||"";
-  document.getElementById("header-back").className=PAGE_STACK.length&&!["dashboard","routes","customers","collection"].includes(id)?"show":"";
-  switch(id){
-    case"dashboard":renderDB();break;
-    case"routes":renderRoutes();break;
-    case"customers":renderCustomers();break;
-    case"collection":renderColl();break;
-    case"payments":renderPays();break;
-    case"invoice":renderInvoice();break;
-    case"employees":renderEmps();break;
-    case"add-customer":renderAddCust();break;
+  const ni=document.getElementById("ni-"+id);if(ni)ni.classList.add("active");
+  const t=TITLES[id]||"";
+  document.getElementById("header-title").textContent=t;
+  document.getElementById("dh-title").textContent=t;
+  const showBack=PAGE_STACK.length&&!["dashboard","routes","customers","collection"].includes(id);
+  document.getElementById("header-back").className=showBack?"show":"";
+  applyResponsive(); renderCurPage();
+}
+function renderCurPage(){
+  switch(CUR){
+    case"dashboard":renderDB();break; case"routes":renderRoutes();break;
+    case"customers":renderCustomers();break; case"collection":renderColl();break;
+    case"payments":renderPays();break; case"invoice":renderInvoice();break;
+    case"employees":renderEmps();break; case"add-customer":renderAddCust();break;
   }
 }
-function goBack(){if(PAGE_STACK.length){showPage(PAGE_STACK.pop(),false);}}
+function goBack(){if(PAGE_STACK.length)showPage(PAGE_STACK.pop(),false);}
 function toggleDrawer(){document.getElementById("more-drawer").classList.toggle("open");document.getElementById("bn-more").classList.toggle("active");}
 function closeDrawer(){document.getElementById("more-drawer").classList.remove("open");document.getElementById("bn-more").classList.remove("active");}
 function openModal(id){document.getElementById(id).classList.add("open");}
 function closeModal(id){document.getElementById(id).classList.remove("open");}
 
-// ===== UTILS =====
+// ---- UTILS ----
 const fmt=n=>"₹"+Math.round(n).toLocaleString("en-IN");
 const fmtD=s=>s?new Date(s).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}):"—";
-const bdg=(s)=>{const m={active:"active",inactive:"inactive",overdue:"overdue",completed:"completed",admin:"admin",agent:"agent",supervisor:"supervisor"};const l={active:"Active",inactive:"Inactive",overdue:"Overdue",completed:"Completed",admin:"Admin",agent:"Agent",supervisor:"Supervisor"};return`<span class="badge badge-${m[s]||"inactive"}">${l[s]||s}</span>`;};
+function bdg(s){const cl={active:"active",inactive:"inactive",overdue:"overdue",completed:"completed",admin:"admin",agent:"agent",supervisor:"supervisor"};const lb={active:"Active",inactive:"Inactive",overdue:"Overdue",completed:"Completed",admin:"Admin",agent:"Agent",supervisor:"Supervisor"};return`<span class="badge badge-${cl[s]||"inactive"}">${lb[s]||s}</span>`;}
 const ini=n=>(n||"").split(" ").map(x=>x[0]).join("").substring(0,2).toUpperCase();
 const uc=s=>s?s[0].toUpperCase()+s.slice(1):"";
 function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500);}
 function myRoutes(){if(!CU)return[];if(CU.role==="admin"||CU.role==="supervisor")return ROUTES;return ROUTES.filter(r=>CU.routeIds&&CU.routeIds.includes(r.id));}
-function myCusts(){const ids=myRoutes().map(r=>r.id);return CUSTOMERS.filter(c=>ids.includes(c.routeId));}
+function myCusts(){return CUSTOMERS.filter(c=>myRoutes().map(r=>r.id).includes(c.routeId));}
 function populateSels(){
   const rs=myRoutes();
   ["cs-route","pay-route","coll-route"].forEach(sid=>{
     const s=document.getElementById(sid);if(!s)return;
-    const isCollRoute=sid==="coll-route";
-    while(s.options.length>(isCollRoute?0:1))s.remove(isCollRoute?0:1);
+    const isColl=sid==="coll-route";
+    while(s.options.length>(isColl?0:1))s.remove(isColl?0:1);
     rs.forEach(r=>s.add(new Option(r.name,r.id)));
-    if(isCollRoute&&rs.length)s.value=rs[0].id;
+    if(isColl&&rs.length)s.value=rs[0].id;
   });
   const ar=document.getElementById("ac-route");if(ar){while(ar.options.length>1)ar.remove(1);rs.forEach(r=>ar.add(new Option(r.name,r.id)));}
   const aa=document.getElementById("ac-agent");if(aa){while(aa.options.length>1)aa.remove(1);EMPLOYEES.filter(e=>e.role==="agent"&&e.status==="active").forEach(e=>aa.add(new Option(e.name,e.id)));}
@@ -534,63 +847,58 @@ function populateSels(){
   const ert=document.getElementById("ert");if(ert){while(ert.options.length>1)ert.remove(1);ROUTES.forEach(r=>ert.add(new Option(r.name,r.id)));}
 }
 
-// ===== DASHBOARD =====
+// ---- DASHBOARD ----
 function renderDB(){
-  const cs=myCusts();
-  const loan=cs.reduce((s,c)=>s+c.loanAmt,0);
-  const active=cs.filter(c=>c.status==="active");
-  const overdue=cs.filter(c=>c.status==="overdue");
-  const daily=active.reduce((s,c)=>s+c.dailyEmi,0);
+  const cs=myCusts(),active=cs.filter(c=>c.status==="active"),ov=cs.filter(c=>c.status==="overdue");
+  const loan=cs.reduce((s,c)=>s+c.loanAmt,0),daily=active.reduce((s,c)=>s+c.dailyEmi,0);
   document.getElementById("db-stats").innerHTML=`
-    <div class="stat-card"><div class="stat-label">Routes</div><div class="stat-value">${myRoutes().length}</div><div class="stat-sub">Assigned</div></div>
-    <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value">${active.length}</div><div class="stat-sub" style="color:${overdue.length?"var(--red)":"var(--text3)"}">${overdue.length} overdue</div></div>
-    <div class="stat-card"><div class="stat-label">Loan Book</div><div class="stat-value" style="font-size:16px">₹${Math.round(loan/1000)}K</div></div>
-    <div class="stat-card" style="border-color:var(--gold)"><div class="stat-label" style="color:var(--gold)">Today's Target</div><div class="stat-value" style="font-size:16px;color:var(--gold)">₹${Math.round(daily/1000)}K</div></div>
+    <div class="stat-card"><div class="stat-label">Total Routes</div><div class="stat-value">${myRoutes().length}</div><div class="stat-sub">Assigned</div></div>
+    <div class="stat-card"><div class="stat-label">Active Customers</div><div class="stat-value">${active.length}</div><div class="stat-sub" style="color:${ov.length?"var(--red)":"inherit"}">${ov.length} overdue</div></div>
+    <div class="stat-card"><div class="stat-label">Total Loan Book</div><div class="stat-value" style="font-size:18px">₹${Math.round(loan/1000)}K</div><div class="stat-sub">Principal</div></div>
+    <div class="stat-card" style="border-color:var(--gold-bdr);background:var(--gold-bg)"><div class="stat-label" style="color:var(--gold)">Today's Target</div><div class="stat-value" style="font-size:18px;color:var(--gold)">₹${Math.round(daily/1000)}K</div><div class="stat-sub">Daily collection</div></div>
   `;
   document.getElementById("db-routes").innerHTML=myRoutes().map(r=>{
-    const rc=cs.filter(c=>c.routeId===r.id);
-    const d=rc.filter(c=>c.status==="active").reduce((s,c)=>s+c.dailyEmi,0);
+    const rc=cs.filter(c=>c.routeId===r.id),d=rc.filter(c=>c.status==="active").reduce((s,c)=>s+c.dailyEmi,0);
     return`<div class="list-item" onclick="goRouteDetail(${r.id})" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">
-      <div><div style="font-size:13px;font-weight:600">${r.short}</div><div style="font-size:11px;color:var(--text3);margin-top:2px">${rc.length} customers</div></div>
-      <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--gold)">${fmt(d)}/day</div><div style="font-size:10px;color:var(--text3)">tap ›</div></div>
+      <div><div style="font-size:13px;font-weight:600">${r.short}</div><div style="font-size:11px;color:var(--text3);margin-top:1px">${rc.length} customers</div></div>
+      <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--gold)">${fmt(d)}/day</div><span style="font-size:10px;color:var(--text3)">tap ›</span></div>
     </div>`;
   }).join("");
-  document.getElementById("db-overdue").innerHTML=overdue.length?overdue.slice(0,5).map(c=>{
+  document.getElementById("db-overdue").innerHTML=ov.length?ov.slice(0,5).map(c=>{
     const r=ROUTES.find(r=>r.id===c.routeId);
     return`<div class="list-item" onclick="goCD(${c.id})" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">
       <div><div style="font-size:13px;font-weight:600">${c.shop}</div><div style="font-size:11px;color:var(--text3)">${r?r.short:""}</div></div>
       <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--red)">${fmt(c.due)}</div>${bdg("overdue")}</div>
     </div>`;
-  }).join(""):`<div style="color:var(--green);font-size:13px;padding:10px 0;font-weight:600">✓ No overdue accounts</div>`;
-  document.getElementById("db-recent").innerHTML=PAYMENTS.slice(0,6).map(p=>`
+  }).join(""):`<div style="color:var(--green);font-size:13px;padding:12px 0;font-weight:600">✓ No overdue accounts today</div>`;
+  document.getElementById("db-recent").innerHTML=PAYMENTS.slice(0,8).map(p=>`
     <div class="list-item" style="display:flex;justify-content:space-between;align-items:center">
-      <div><div style="font-size:13px;font-weight:600">${p.cname}</div><div style="font-size:11px;color:var(--text3)">${p.rname} · ${fmtD(p.date)}</div></div>
+      <div><div style="font-size:13px;font-weight:600">${p.cname}</div><div style="font-size:11px;color:var(--text3)">${p.rname} · ${fmtD(p.date)} · ${p.method}</div></div>
       <div style="color:var(--green);font-weight:700">${fmt(p.amount)}</div>
-    </div>`).join("")||`<div style="color:var(--text3);padding:10px 0;font-size:13px">No payments yet</div>`;
+    </div>`).join("")||`<div class="empty-state" style="padding:20px"><div>No payments yet</div></div>`;
 }
 
-// ===== ROUTES =====
+// ---- ROUTES ----
 function renderRoutes(){
   const cs=myCusts();
   document.getElementById("routes-list").innerHTML=myRoutes().map(r=>{
-    const rc=cs.filter(c=>c.routeId===r.id);
-    const act=rc.filter(c=>c.status==="active"),ov=rc.filter(c=>c.status==="overdue"),done=rc.filter(c=>c.status==="completed");
+    const rc=cs.filter(c=>c.routeId===r.id),act=rc.filter(c=>c.status==="active"),ov2=rc.filter(c=>c.status==="overdue"),done=rc.filter(c=>c.status==="completed");
     const loan=rc.reduce((s,c)=>s+c.loanAmt,0),daily=act.reduce((s,c)=>s+c.dailyEmi,0);
     const ags=EMPLOYEES.filter(e=>e.routeIds&&e.routeIds.includes(r.id)&&e.role==="agent");
-    return`<div class="route-card" onclick="goRouteDetail(${r.id})">
+    return`<div class="card" onclick="goRouteDetail(${r.id})" style="cursor:pointer;margin-bottom:0">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <div><div style="font-size:15px;font-weight:700;color:var(--gold)">${r.name}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:3px">${ags.length?ags.map(a=>"👤 "+a.name).join(" · "):"No agents"}</div></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">${ags.length?ags.map(a=>"👤 "+a.name).join(" · "):"No agents assigned"}</div></div>
         ${bdg("active")}
       </div>
-      <div class="mini-grid">
-        <div class="mini-box"><div class="mini-label">Customers</div><div class="mini-val">${rc.length}</div></div>
-        <div class="mini-box"><div class="mini-label">Loan Book</div><div class="mini-val" style="font-size:13px">₹${Math.round(loan/1000)}K</div></div>
-        <div class="mini-box"><div class="mini-label">Daily</div><div class="mini-val" style="font-size:13px;color:var(--gold)">₹${Math.round(daily/1000)}K</div></div>
+      <div class="mini-row">
+        <div class="mini-box"><div class="mini-lbl">Customers</div><div class="mini-val">${rc.length}</div></div>
+        <div class="mini-box"><div class="mini-lbl">Loan Book</div><div class="mini-val" style="font-size:13px">₹${Math.round(loan/1000)}K</div></div>
+        <div class="mini-box" style="background:var(--gold-bg);border-color:var(--gold-bdr)"><div class="mini-lbl" style="color:var(--gold)">Daily</div><div class="mini-val" style="font-size:13px;color:var(--gold)">₹${Math.round(daily/1000)}K</div></div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
         ${act.length?`<span class="badge badge-active">${act.length} Active</span>`:""}
-        ${ov.length?`<span class="badge badge-overdue">${ov.length} Overdue</span>`:""}
+        ${ov2.length?`<span class="badge badge-overdue">${ov2.length} Overdue</span>`:""}
         ${done.length?`<span class="badge badge-completed">${done.length} Done</span>`:""}
       </div>
     </div>`;
@@ -598,256 +906,287 @@ function renderRoutes(){
 }
 function goRouteDetail(rid){
   const r=ROUTES.find(r=>r.id===rid);if(!r)return;
-  const cs=CUSTOMERS.filter(c=>c.routeId===rid);
-  const ags=EMPLOYEES.filter(e=>e.routeIds&&e.routeIds.includes(rid)&&e.role==="agent");
+  const cs=CUSTOMERS.filter(c=>c.routeId===rid),ags=EMPLOYEES.filter(e=>e.routeIds&&e.routeIds.includes(rid)&&e.role==="agent");
   const loan=cs.reduce((s,c)=>s+c.loanAmt,0),due=cs.reduce((s,c)=>s+c.due,0),daily=cs.filter(c=>c.status==="active").reduce((s,c)=>s+c.dailyEmi,0);
   document.getElementById("route-detail-content").innerHTML=`
-    <div class="stat-grid" style="margin-bottom:13px">
+    <div class="stats-4" style="margin-bottom:14px">
       <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value">${cs.length}</div></div>
-      <div class="stat-card"><div class="stat-label">Loan Book</div><div class="stat-value" style="font-size:16px">₹${Math.round(loan/1000)}K</div></div>
-      <div class="stat-card" style="border-color:var(--gold)"><div class="stat-label" style="color:var(--gold)">Daily Target</div><div class="stat-value" style="font-size:16px;color:var(--gold)">₹${Math.round(daily/1000)}K</div></div>
-      <div class="stat-card" style="border-color:var(--red)"><div class="stat-label" style="color:var(--red)">Outstanding</div><div class="stat-value" style="font-size:16px;color:var(--red)">₹${Math.round(due/1000)}K</div></div>
+      <div class="stat-card"><div class="stat-label">Loan Book</div><div class="stat-value" style="font-size:17px">₹${Math.round(loan/1000)}K</div></div>
+      <div class="stat-card" style="background:var(--gold-bg);border-color:var(--gold-bdr)"><div class="stat-label" style="color:var(--gold)">Daily Target</div><div class="stat-value" style="font-size:17px;color:var(--gold)">₹${Math.round(daily/1000)}K</div></div>
+      <div class="stat-card" style="background:var(--red-bg);border-color:var(--red-bdr)"><div class="stat-label" style="color:var(--red)">Outstanding</div><div class="stat-value" style="font-size:17px;color:var(--red)">₹${Math.round(due/1000)}K</div></div>
     </div>
-    <div class="card" style="margin-bottom:13px">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:11px">Assigned Agents</div>
-      ${ags.length?ags.map(a=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
-        <div style="width:38px;height:38px;border-radius:50%;background:var(--purple-bg);border:2px solid var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--purple);flex-shrink:0">${ini(a.name)}</div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="section-title">Assigned Agents</div>
+      ${ags.length?ags.map(a=>`<div class="list-item" style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--purple-bg);border:1.5px solid var(--purple-bdr);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--purple);flex-shrink:0">${ini(a.name)}</div>
         <div style="flex:1"><div style="font-size:13px;font-weight:600">${a.name}</div><div style="font-size:11px;color:var(--text3)">${a.phone}</div></div>
-        ${bdg(a.role)}
-      </div>`).join(""):`<div style="color:var(--text3);font-size:13px;padding:8px 0">No agents assigned</div>`}
+        ${bdg(a.role)}</div>`).join(""):`<div style="color:var(--text3);font-size:13px;padding:8px 0">No agents assigned</div>`}
     </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:11px">Customers (${cs.length})</div>
-    ${cs.map(c=>`<div class="cust-card" onclick="goCD(${c.id})">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div><div style="font-size:14px;font-weight:700">${c.shop}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner} · ${c.phone}</div></div>
-        ${bdg(c.status)}
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-        <div><div class="mini-label">Loan</div><div style="font-size:13px;font-weight:600;margin-top:2px">${fmt(c.loanAmt)}</div></div>
-        <div><div class="mini-label">Daily EMI</div><div style="font-size:13px;font-weight:700;color:var(--gold);margin-top:2px">${fmt(c.dailyEmi)}</div></div>
-        <div><div class="mini-label">Balance</div><div style="font-size:13px;font-weight:700;color:${c.due>0?"var(--red)":"var(--green)"};margin-top:2px">${fmt(c.due)}</div></div>
-      </div>
-    </div>`).join("")}
+    <div class="section-title">Customers (${cs.length})</div>
+    ${isTablet()?`<div class="table-wrap">${buildCustTable(cs)}</div>`:cs.map(c=>buildCustCard(c)).join("")}
   `;
   PAGE_STACK.push("routes");showPage("route-detail",false);
   document.getElementById("header-title").textContent=r.short;
+  document.getElementById("dh-title").textContent=r.name;
 }
 
-// ===== CUSTOMERS =====
+// ---- CUSTOMERS ----
+function buildCustCard(c){
+  const r=ROUTES.find(r=>r.id===c.routeId);
+  return`<div class="cust-card" onclick="goCD(${c.id})">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div><div style="font-size:14px;font-weight:700">${c.shop}</div><div style="font-size:12px;color:var(--text3);margin-top:1px">${c.owner}${r?" · "+r.short:""}</div></div>
+      ${bdg(c.status)}
+    </div>
+    <div class="cust-stat-row">
+      <div class="mini-box"><div class="mini-lbl">Loan</div><div class="mini-val" style="font-size:13px">${fmt(c.loanAmt)}</div></div>
+      <div class="mini-box" style="background:var(--gold-bg);border-color:var(--gold-bdr)"><div class="mini-lbl" style="color:var(--gold)">Daily EMI</div><div class="mini-val" style="font-size:13px;color:var(--gold)">${fmt(c.dailyEmi)}</div></div>
+      <div class="mini-box" style="background:${c.due>0?"var(--red-bg)":"var(--green-bg)"};border-color:${c.due>0?"var(--red-bdr)":"var(--green-bdr)"}"><div class="mini-lbl" style="color:${c.due>0?"var(--red)":"var(--green)"}">Balance</div><div class="mini-val" style="font-size:13px;color:${c.due>0?"var(--red)":"var(--green)"}">${fmt(c.due)}</div></div>
+    </div>
+  </div>`;
+}
+function buildCustTable(cs){
+  return`<table><thead><tr><th>Shop</th><th>Owner</th><th>Phone</th><th>Loan</th><th>Daily EMI</th><th>Balance</th><th>Status</th><th></th></tr></thead>
+  <tbody>${cs.map(c=>`<tr>
+    <td style="font-weight:600">${c.shop}</td><td style="color:var(--text2)">${c.owner}</td>
+    <td><a href="tel:${c.phone}">${c.phone}</a></td>
+    <td>${fmt(c.loanAmt)}</td><td style="color:var(--gold);font-weight:700">${fmt(c.dailyEmi)}</td>
+    <td style="color:${c.due>0?"var(--red)":"var(--green)"};font-weight:700">${fmt(c.due)}</td>
+    <td>${bdg(c.status)}</td>
+    <td><button class="btn btn-sm" onclick="event.stopPropagation();goCD(${c.id})">View →</button></td>
+  </tr>`).join("")}</tbody></table>`;
+}
 function renderCustomers(){
   const q=(document.getElementById("cs-search")||{}).value||"";
   const rf=parseInt((document.getElementById("cs-route")||{}).value||0);
   const sf=(document.getElementById("cs-status")||{}).value||"";
   let cs=myCusts();
   if(q)cs=cs.filter(c=>c.shop.toLowerCase().includes(q.toLowerCase())||c.owner.toLowerCase().includes(q.toLowerCase())||c.phone.includes(q));
-  if(rf)cs=cs.filter(c=>c.routeId===rf);if(sf)cs=cs.filter(c=>c.status===sf);
-  document.getElementById("customers-list").innerHTML=cs.length?cs.map(c=>{
-    const r=ROUTES.find(r=>r.id===c.routeId);
-    return`<div class="cust-card" onclick="goCD(${c.id})">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <div><div style="font-size:14px;font-weight:700">${c.shop}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner} · ${r?r.short:""}</div></div>
-        ${bdg(c.status)}
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-        <div><div class="mini-label">Loan</div><div style="font-size:13px;font-weight:600;margin-top:2px">${fmt(c.loanAmt)}</div></div>
-        <div><div class="mini-label">Daily EMI</div><div style="font-size:13px;font-weight:700;color:var(--gold);margin-top:2px">${fmt(c.dailyEmi)}</div></div>
-        <div><div class="mini-label">Balance</div><div style="font-size:13px;font-weight:700;color:${c.due>0?"var(--red)":"var(--green)"};margin-top:2px">${fmt(c.due)}</div></div>
-      </div>
-    </div>`;
-  }).join(""):`<div class="empty-state"><div class="empty-icon">🔍</div><div>No customers found</div></div>`;
+  if(rf)cs=cs.filter(c=>c.routeId===rf); if(sf)cs=cs.filter(c=>c.status===sf);
+  const empty=`<div class="empty-state"><div class="empty-icon">🔍</div><div>No customers found</div></div>`;
+  const cc=document.getElementById("customers-cards"),tb=document.getElementById("customers-tbody");
+  if(cc)cc.innerHTML=cs.length?cs.map(c=>buildCustCard(c)).join(""):empty;
+  if(tb)tb.innerHTML=cs.length?cs.map(c=>{const r=ROUTES.find(r=>r.id===c.routeId);return`<tr>
+    <td style="font-weight:600">${c.shop}<div style="font-size:11px;color:var(--text3);font-weight:400">${c.owner}</div></td>
+    <td style="color:var(--text2)">${r?r.short:""}</td>
+    <td><a href="tel:${c.phone}">${c.phone}</a></td>
+    <td>${fmt(c.loanAmt)}</td><td style="color:var(--gold);font-weight:700">${fmt(c.dailyEmi)}</td>
+    <td style="color:${c.due>0?"var(--red)":"var(--green)"};font-weight:700">${fmt(c.due)}</td>
+    <td>${bdg(c.status)}</td>
+    <td><button class="btn btn-sm" onclick="goCD(${c.id})">View →</button></td>
+  </tr>`;}).join(""):`<tr><td colspan="8">${empty}</td></tr>`;
 }
 function goCD(cid){
   const c=CUSTOMERS.find(c=>c.id===cid);if(!c)return;
-  const r=ROUTES.find(r=>r.id===c.routeId);
-  const prog=Math.min(100,Math.round(c.collected/c.totalPayable*100));
+  const r=ROUTES.find(r=>r.id===c.routeId),prog=Math.min(100,Math.round(c.collected/c.totalPayable*100));
   const pays=PAYMENTS.filter(p=>p.cid===cid).slice(0,15);
   document.getElementById("cust-detail").innerHTML=`
-    <div class="card" style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-        <div style="width:48px;height:48px;border-radius:50%;background:var(--gold-bg);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--gold);flex-shrink:0">${ini(c.owner)}</div>
-        <div style="flex:1"><div style="font-size:15px;font-weight:700">${c.shop}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner}</div></div>
-        ${bdg(c.status)}
+    <div class="detail-grid" style="margin-bottom:14px">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--gold-bg);border:2px solid var(--gold-bdr);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:var(--gold);flex-shrink:0">${ini(c.owner)}</div>
+          <div style="flex:1"><div style="font-size:16px;font-weight:700">${c.shop}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner}</div></div>
+          ${bdg(c.status)}
+        </div>
+        <div class="kv-row"><span class="kv-key">Route</span><span class="kv-val">${r?r.name:"—"}</span></div>
+        <div class="kv-row"><span class="kv-key">Phone</span><span class="kv-val"><a href="tel:${c.phone}">${c.phone}</a></span></div>
+        <div class="kv-row"><span class="kv-key">Address</span><span class="kv-val" style="max-width:55%">${c.address}</span></div>
+        <div class="kv-row"><span class="kv-key">Disbursed</span><span class="kv-val">${fmtD(c.disbursed)}</span></div>
       </div>
-      <div class="kv-row"><span class="kv-key">Route</span><span class="kv-val">${r?r.name:"—"}</span></div>
-      <div class="kv-row"><span class="kv-key">Phone</span><span class="kv-val"><a href="tel:${c.phone}" style="color:var(--blue)">${c.phone}</a></span></div>
-      <div class="kv-row"><span class="kv-key">Address</span><span class="kv-val">${c.address}</span></div>
-      <div class="kv-row"><span class="kv-key">Disbursed</span><span class="kv-val">${fmtD(c.disbursed)}</span></div>
-    </div>
-    <div class="card" style="margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Loan Details</div>
-      <div class="kv-row"><span class="kv-key">Principal</span><span class="kv-val">${fmt(c.loanAmt)}</span></div>
-      <div class="kv-row"><span class="kv-key">Interest (${c.interest}%)</span><span class="kv-val">${fmt(c.loanAmt*c.interest/100)}</span></div>
-      <div class="kv-row"><span class="kv-key">Total Payable</span><span class="kv-val" style="font-weight:700">${fmt(c.totalPayable)}</span></div>
-      <div class="kv-row"><span class="kv-key">Daily EMI</span><span class="kv-val" style="color:var(--gold);font-weight:700">${fmt(c.dailyEmi)}</span></div>
-      <div class="kv-row"><span class="kv-key">Tenure</span><span class="kv-val">${c.tenure} days</span></div>
-    </div>
-    <div class="card" style="margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Collection Status</div>
-      <div class="stat-grid" style="margin-bottom:14px">
-        <div style="background:var(--bg3);border-radius:var(--radius);padding:11px;text-align:center"><div class="mini-label">Collected</div><div style="font-size:17px;font-weight:700;color:var(--green);margin-top:3px">${fmt(c.collected)}</div></div>
-        <div style="background:var(--bg3);border-radius:var(--radius);padding:11px;text-align:center"><div class="mini-label">Outstanding</div><div style="font-size:17px;font-weight:700;color:var(--red);margin-top:3px">${fmt(c.due)}</div></div>
-        <div style="background:var(--bg3);border-radius:var(--radius);padding:11px;text-align:center"><div class="mini-label">Days Paid</div><div style="font-size:17px;font-weight:700;margin-top:3px">${Math.round(c.collected/c.dailyEmi)}</div></div>
-        <div style="background:var(--bg3);border-radius:var(--radius);padding:11px;text-align:center"><div class="mini-label">Remaining</div><div style="font-size:17px;font-weight:700;margin-top:3px">${Math.max(0,c.tenure-Math.round(c.collected/c.dailyEmi))} days</div></div>
+      <div class="card">
+        <div class="section-title">Loan Details</div>
+        <div class="kv-row"><span class="kv-key">Principal</span><span class="kv-val">${fmt(c.loanAmt)}</span></div>
+        <div class="kv-row"><span class="kv-key">Interest (${c.interest}%)</span><span class="kv-val">${fmt(c.loanAmt*c.interest/100)}</span></div>
+        <div class="kv-row"><span class="kv-key">Total Payable</span><span class="kv-val" style="font-weight:700">${fmt(c.totalPayable)}</span></div>
+        <div class="kv-row"><span class="kv-key">Daily EMI</span><span class="kv-val" style="color:var(--gold);font-weight:700">${fmt(c.dailyEmi)}</span></div>
+        <div class="kv-row"><span class="kv-key">Tenure</span><span class="kv-val">${c.tenure} days</span></div>
       </div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--text3)">Repayment Progress</span><span style="font-weight:700">${prog}%</span></div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="section-title">Collection Status</div>
+      <div class="stats-4" style="margin-bottom:14px">
+        <div class="stat-card" style="background:var(--green-bg);border-color:var(--green-bdr)"><div class="stat-label" style="color:var(--green)">Collected</div><div class="stat-value" style="font-size:18px;color:var(--green)">${fmt(c.collected)}</div></div>
+        <div class="stat-card" style="background:var(--red-bg);border-color:var(--red-bdr)"><div class="stat-label" style="color:var(--red)">Outstanding</div><div class="stat-value" style="font-size:18px;color:var(--red)">${fmt(c.due)}</div></div>
+        <div class="stat-card"><div class="stat-label">Days Paid</div><div class="stat-value">${Math.round(c.collected/c.dailyEmi)}</div></div>
+        <div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-value">${Math.max(0,c.tenure-Math.round(c.collected/c.dailyEmi))} days</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:6px"><span style="color:var(--text3)">Repayment Progress</span><span style="color:var(--gold)">${prog}%</span></div>
       <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
     </div>
     <div class="card">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Payment History</div>
-      ${pays.length?pays.map(p=>`<div class="list-item" style="display:flex;justify-content:space-between;align-items:center">
-        <div><div style="font-size:13px;font-weight:600;color:var(--green)">${fmt(p.amount)}</div><div style="font-size:11px;color:var(--text3);margin-top:2px">${fmtD(p.date)} · ${p.method} · ${p.collector}</div></div>
-      </div>`).join(""):`<div class="empty-state" style="padding:20px"><div>No history yet</div></div>`}
+      <div class="section-title">Payment History (${pays.length} records)</div>
+      ${pays.length?`<div class="table-wrap"><table><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Collector</th></tr></thead>
+      <tbody>${pays.map(p=>`<tr><td>${fmtD(p.date)}</td><td style="color:var(--green);font-weight:700">${fmt(p.amount)}</td><td>${p.method}</td><td style="color:var(--text2)">${p.collector}</td></tr>`).join("")}</tbody></table></div>`
+      :`<div class="empty-state" style="padding:20px"><div>No payments yet</div></div>`}
     </div>
   `;
-  PAGE_STACK.push(CUR_PAGE);showPage("customer-detail",false);
+  PAGE_STACK.push(CUR);showPage("customer-detail",false);
   document.getElementById("header-title").textContent=c.shop;
+  document.getElementById("dh-title").textContent=c.shop;
 }
 
-// ===== COLLECTION =====
+// ---- COLLECTION ----
 function renderColl(){
-  const rs=myRoutes();const sel=document.getElementById("coll-route");
+  const rs=myRoutes(),sel=document.getElementById("coll-route");
   if(!sel.value&&rs.length)sel.value=rs[0].id;
-  const rid=parseInt(sel.value);
-  const cs=CUSTOMERS.filter(c=>c.routeId===rid&&c.status!=="completed");
-  let col=0,tgt=0;cs.forEach(c=>{tgt+=c.dailyEmi;if(COLL_MARKED[c.id])col+=c.dailyEmi;});
+  const rid=parseInt(sel.value),cs=CUSTOMERS.filter(c=>c.routeId===rid&&c.status!=="completed");
+  let col=0,tgt=0;cs.forEach(c=>{tgt+=c.dailyEmi;if(COLL[c.id])col+=c.dailyEmi;});
   const pct=tgt?Math.round(col/tgt*100):0;
+  document.getElementById("coll-bar").style.width=pct+"%";
+  document.getElementById("coll-pct").textContent=pct+"% collected today";
   document.getElementById("coll-stats").innerHTML=`
-    <div class="stat-card"><div class="stat-label">Target</div><div class="stat-value" style="font-size:17px">${fmt(tgt)}</div></div>
-    <div class="stat-card" style="border-color:var(--green)"><div class="stat-label" style="color:var(--green)">Collected</div><div class="stat-value" style="font-size:17px;color:var(--green)">${fmt(col)}</div></div>
-    <div class="stat-card" style="border-color:var(--red)"><div class="stat-label" style="color:var(--red)">Pending</div><div class="stat-value" style="font-size:17px;color:var(--red)">${fmt(tgt-col)}</div></div>
-    <div class="stat-card" style="border-color:var(--gold)"><div class="stat-label" style="color:var(--gold)">Done</div><div class="stat-value" style="font-size:17px;color:var(--gold)">${pct}%</div></div>
+    <div class="stat-card"><div class="stat-label">Target</div><div class="stat-value" style="font-size:18px">${fmt(tgt)}</div></div>
+    <div class="stat-card" style="background:var(--green-bg);border-color:var(--green-bdr)"><div class="stat-label" style="color:var(--green)">Collected</div><div class="stat-value" style="font-size:18px;color:var(--green)">${fmt(col)}</div></div>
+    <div class="stat-card" style="background:var(--red-bg);border-color:var(--red-bdr)"><div class="stat-label" style="color:var(--red)">Pending</div><div class="stat-value" style="font-size:18px;color:var(--red)">${fmt(tgt-col)}</div></div>
+    <div class="stat-card" style="background:var(--gold-bg);border-color:var(--gold-bdr)"><div class="stat-label" style="color:var(--gold)">Progress</div><div class="stat-value" style="font-size:18px;color:var(--gold)">${pct}%</div></div>
   `;
-  document.getElementById("coll-list").innerHTML=cs.length?cs.map(c=>`
-    <div class="coll-item ${COLL_MARKED[c.id]?"done":""}">
+  document.getElementById("coll-cards").innerHTML=cs.length?cs.map(c=>`
+    <div class="coll-item ${COLL[c.id]?"done":""}">
       <div style="flex:1">
         <div style="font-size:14px;font-weight:700">${c.shop}</div>
         <div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner}</div>
-        <div style="display:flex;gap:12px;margin-top:6px;align-items:center">
+        <div style="display:flex;gap:12px;margin-top:7px">
           <span style="font-size:13px;font-weight:700;color:var(--gold)">${fmt(c.dailyEmi)}/day</span>
-          <span style="font-size:12px;color:${c.due>0?"var(--red)":"var(--green)"}">Bal: ${fmt(c.due)}</span>
+          <span style="font-size:12px;color:${c.due>0?"var(--red)":"var(--green)"};font-weight:600">Bal: ${fmt(c.due)}</span>
         </div>
       </div>
-      <button onclick="toggleColl(${c.id},${rid})" class="btn ${COLL_MARKED[c.id]?"btn-gold":""}" style="flex-shrink:0;padding:10px 14px;font-size:13px;min-width:80px">
-        ${COLL_MARKED[c.id]?"✓ Done":"Collect"}
+      <button onclick="toggleColl(${c.id},${rid})" class="btn ${COLL[c.id]?"btn-gold":""}" style="flex-shrink:0;min-width:88px">
+        ${COLL[c.id]?"✓ Done":"Collect"}
       </button>
-    </div>`).join(""):`<div class="empty-state"><div class="empty-icon">₹</div><div>No active customers</div></div>`;
+    </div>`).join(""):`<div class="empty-state"><div class="empty-icon">₹</div><div>No active customers in this route</div></div>`;
+  document.getElementById("coll-tbody").innerHTML=cs.length?cs.map(c=>`<tr style="background:${COLL[c.id]?"var(--green-bg)":"transparent"}">
+    <td style="font-weight:600">${c.shop}</td><td style="color:var(--text2)">${c.owner}</td>
+    <td style="color:var(--gold);font-weight:700">${fmt(c.dailyEmi)}</td>
+    <td style="color:${c.due>0?"var(--red)":"var(--green)"};font-weight:700">${fmt(c.due)}</td>
+    <td>${bdg(c.status)}</td>
+    <td><button onclick="toggleColl(${c.id},${rid})" class="btn btn-sm ${COLL[c.id]?"btn-gold":""}">${COLL[c.id]?"✓ Collected":"Mark Collected"}</button></td>
+  </tr>`).join(""):`<tr><td colspan="6"><div class="empty-state" style="padding:16px">No customers</div></td></tr>`;
 }
 function toggleColl(cid,rid){
-  COLL_MARKED[cid]=!COLL_MARKED[cid];
-  if(COLL_MARKED[cid]){
-    const c=CUSTOMERS.find(c=>c.id===cid),r=ROUTES.find(r=>r.id===rid);
-    const ags=EMPLOYEES.filter(e=>e.routeIds&&e.routeIds.includes(rid)&&e.role==="agent");
-    PAYMENTS.unshift({id:PAYMENTS.length+1,date:TODAY.toISOString().split("T")[0],cid,cname:c.shop,rid,rname:r?r.short:"",amount:c.dailyEmi,method:"Cash",collector:ags.length?ags[0].name:CU.name});
+  COLL[cid]=!COLL[cid];
+  if(COLL[cid]){
+    const c=CUSTOMERS.find(c=>c.id===cid),r=ROUTES.find(r=>r.id===rid),ag=EMPLOYEES.find(e=>e.routeIds&&e.routeIds.includes(rid)&&e.role==="agent");
+    PAYMENTS.unshift({id:PAYMENTS.length+1,date:TODAY.toISOString().split("T")[0],cid,cname:c.shop,rid,rname:r?r.short:"",amount:c.dailyEmi,method:"Cash",collector:ag?ag.name:CU.name});
     toast("✓ Collected: "+c.shop);
   }
   renderColl();
 }
 
-// ===== PAYMENTS =====
+// ---- PAYMENTS ----
 function renderPays(){
-  const rf=parseInt((document.getElementById("pay-route")||{}).value||0);
-  const rids=myRoutes().map(r=>r.id);
+  const rf=parseInt((document.getElementById("pay-route")||{}).value||0),rids=myRoutes().map(r=>r.id);
   let pays=PAYMENTS.filter(p=>rids.includes(p.rid));
   if(rf)pays=pays.filter(p=>p.rid===rf);
-  document.getElementById("pay-list").innerHTML=pays.slice(0,80).map(p=>`
+  const rows=pays.slice(0,100);
+  document.getElementById("pay-cards").innerHTML=rows.map(p=>`
     <div class="list-item" style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-size:13px;font-weight:600">${p.cname}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:2px">${p.rname} · ${fmtD(p.date)} · ${p.method}</div>
-        <div style="font-size:11px;color:var(--text3)">By ${p.collector}</div>
-      </div>
+      <div><div style="font-size:13px;font-weight:600">${p.cname}</div><div style="font-size:11px;color:var(--text3);margin-top:2px">${p.rname} · ${fmtD(p.date)} · ${p.method} · ${p.collector}</div></div>
       <div style="color:var(--green);font-weight:700;font-size:14px;flex-shrink:0;margin-left:10px">${fmt(p.amount)}</div>
     </div>`).join("")||`<div class="empty-state"><div class="empty-icon">📋</div><div>No records</div></div>`;
+  document.getElementById("pay-tbody").innerHTML=rows.length?rows.map(p=>`<tr>
+    <td>${fmtD(p.date)}</td><td style="font-weight:600">${p.cname}</td>
+    <td style="color:var(--text2)">${p.rname}</td><td style="color:var(--green);font-weight:700">${fmt(p.amount)}</td>
+    <td>${p.method}</td><td style="color:var(--text2)">${p.collector}</td>
+  </tr>`).join(""):`<tr><td colspan="6"><div class="empty-state" style="padding:16px">No records</div></td></tr>`;
 }
 
-// ===== INVOICE =====
+// ---- INVOICE ----
 function renderInvoice(){updateInvoice();}
 function updateInvoice(){
-  const cid=parseInt((document.getElementById("inv-cust")||{}).value||0);
-  const type=(document.getElementById("inv-type")||{}).value||"receipt";
-  const c=CUSTOMERS.find(c=>c.id===cid);
-  const prev=document.getElementById("inv-preview");
-  if(!c){prev.innerHTML=`<div class="empty-state"><div class="empty-icon">🧾</div><div>Select a customer to generate</div></div>`;return;}
-  const r=ROUTES.find(r=>r.id===c.routeId);
-  const d2=TODAY.toLocaleDateString("en-IN");
+  const cid=parseInt((document.getElementById("inv-cust")||{}).value||0),type=(document.getElementById("inv-type")||{}).value||"receipt";
+  const c=CUSTOMERS.find(c=>c.id===cid),prev=document.getElementById("inv-preview");
+  if(!c){prev.innerHTML=`<div class="empty-state"><div class="empty-icon">🧾</div><div>Select a customer to preview</div></div>`;return;}
+  const r=ROUTES.find(r=>r.id===c.routeId),d2=TODAY.toLocaleDateString("en-IN");
+  const hdr=`<div style="text-align:center;padding-bottom:14px;border-bottom:1.5px solid var(--border);margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px">
+      <svg viewBox="0 0 40 80" width="20" height="36" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="ig1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5d060"/><stop offset="55%" stop-color="#d4940f"/><stop offset="100%" stop-color="#a06008"/></linearGradient>
+        <linearGradient id="ig2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8a030"/><stop offset="50%" stop-color="#f0c840"/><stop offset="100%" stop-color="#c8a030"/></linearGradient>
+        <linearGradient id="ig3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a06008"/><stop offset="50%" stop-color="#e0a830"/><stop offset="100%" stop-color="#a06008"/></linearGradient></defs>
+        <path d="M20 1 L25.5 16 L20 12 L14.5 16 Z" fill="url(#ig1)"/><path d="M20 12 L27 27 L20 23 L13 27 Z" fill="url(#ig1)"/>
+        <path d="M13 30 Q7 28 4 33 Q7 40 13 37 L20 33 L27 37 Q33 40 36 33 Q33 28 27 30 Z" fill="url(#ig2)"/>
+        <rect x="18.8" y="33" width="2.4" height="33" rx="1.2" fill="url(#ig3)"/>
+        <ellipse cx="20" cy="67.5" rx="3.8" ry="2.5" fill="url(#ig1)"/><ellipse cx="20" cy="69.5" rx="2.6" ry="1.6" fill="#f5d060"/>
+      </svg>
+      <div style="font-size:18px;font-weight:800;color:var(--gold)">VELAVAN FINANCE</div>
+    </div>
+    <div style="font-size:11px;color:var(--text3)">Mayiladuthurai · Thanjavur · Kumbakonam</div>
+    <div style="font-size:13px;font-weight:700;margin-top:8px;text-transform:uppercase;letter-spacing:.05em">${type==="receipt"?"Daily Collection Receipt":type==="statement"?"Loan Statement":"No Dues Certificate"}</div>
+    <div style="font-size:11px;color:var(--text3)">${d2}</div>
+  </div>`;
   let body="";
   if(type==="receipt"){
-    body=`<div style="text-align:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:14px">
-      <div style="font-size:20px;font-weight:700;color:var(--gold)">VELAVAN FINANCE</div>
-      <div style="font-size:11px;color:var(--text3)">Mayiladuthurai · Thanjavur · Kumbakonam</div>
-      <div style="font-size:14px;font-weight:700;margin-top:8px">DAILY COLLECTION RECEIPT</div>
-      <div style="font-size:11px;color:var(--text3)">${d2}</div>
-    </div>
-    ${[["Customer",c.shop],["Owner",c.owner],["Route",r?r.name:"—"],["Phone",c.phone]].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join("")}
-    <div style="background:var(--gold-bg);border:2px solid var(--gold);border-radius:var(--radius-lg);padding:18px;text-align:center;margin:14px 0">
-      <div style="font-size:12px;color:var(--gold);font-weight:700">AMOUNT COLLECTED TODAY</div>
-      <div style="font-size:30px;font-weight:700;color:var(--gold)">${fmt(c.dailyEmi)}</div>
+    body=`${[["Customer",c.shop],["Owner",c.owner],["Route",r?r.name:"—"],["Phone",c.phone]].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join("")}
+    <div style="background:var(--gold-bg);border:2px solid var(--gold-bdr);border-radius:var(--rl);padding:18px;text-align:center;margin:14px 0">
+      <div style="font-size:12px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.05em">Amount Collected Today</div>
+      <div style="font-size:32px;font-weight:800;color:var(--gold)">${fmt(c.dailyEmi)}</div>
     </div>
     ${[["Total Payable",fmt(c.totalPayable)],["Paid So Far",fmt(c.collected)],["Balance Due",fmt(c.due)]].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join("")}
     <div style="text-align:center;color:var(--text3);font-size:11px;margin-top:14px;border-top:1px solid var(--border);padding-top:10px">Thank you for your payment · Velavan Finance</div>`;
   }else if(type==="statement"){
-    const prog=Math.round(c.collected/c.totalPayable*100);
-    body=`<div style="text-align:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:14px">
-      <div style="font-size:18px;font-weight:700;color:var(--gold)">VELAVAN FINANCE</div>
-      <div style="font-size:14px;font-weight:700;margin-top:6px">LOAN STATEMENT</div>
-      <div style="font-size:11px;color:var(--text3)">${d2}</div>
-    </div>
-    ${[["Customer",c.shop],["Principal",fmt(c.loanAmt)],["Interest",c.interest+"%"],["Total Payable",fmt(c.totalPayable)],["Daily EMI",fmt(c.dailyEmi)],["Tenure",c.tenure+" days"],["Disbursed",fmtD(c.disbursed)],["Paid",fmt(c.collected)],["Balance",fmt(c.due)]].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join("")}
-    <div style="margin-top:14px"><div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div><div style="font-size:11px;color:var(--text3);margin-top:4px;text-align:right">${prog}% repaid</div></div>`;
+    const p2=Math.round(c.collected/c.totalPayable*100);
+    body=`${[["Customer",c.shop],["Principal",fmt(c.loanAmt)],["Interest",c.interest+"%"],["Total Payable",fmt(c.totalPayable)],["Daily EMI",fmt(c.dailyEmi)],["Tenure",c.tenure+" days"],["Disbursed",fmtD(c.disbursed)],["Total Paid",fmt(c.collected)],["Balance Due",fmt(c.due)]].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join("")}
+    <div style="margin-top:14px"><div class="progress-bar"><div class="progress-fill" style="width:${p2}%"></div></div><div style="font-size:11px;color:var(--text3);margin-top:4px;text-align:right;font-weight:600">${p2}% repaid</div></div>`;
   }else{
-    body=`<div style="text-align:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:14px">
-      <div style="font-size:18px;font-weight:700;color:var(--gold)">VELAVAN FINANCE</div>
-      <div style="font-size:14px;font-weight:700;margin-top:6px">NO DUES CERTIFICATE</div>
-      <div style="font-size:11px;color:var(--text3)">${d2}</div>
+    body=`<p style="color:var(--text2);line-height:1.8;font-size:13px;margin-bottom:16px">This is to certify that <strong>${c.owner}</strong> of <strong>${c.shop}</strong> has fully repaid the loan of <strong>${fmt(c.loanAmt)}</strong> disbursed on <strong>${fmtD(c.disbursed)}</strong>. All dues are cleared. No outstanding balance.</p>
+    <div style="background:var(--green-bg);border:2px solid var(--green-bdr);border-radius:var(--rl);padding:18px;text-align:center;margin-bottom:16px">
+      <div style="font-size:11px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.05em">Total Amount Repaid</div>
+      <div style="font-size:28px;font-weight:800;color:var(--green)">${fmt(c.totalPayable)}</div>
     </div>
-    <p style="color:var(--text2);line-height:1.8;font-size:13px;margin-bottom:16px">This certifies that <strong>${c.owner}</strong> of <strong>${c.shop}</strong> has fully repaid the loan of <strong>${fmt(c.loanAmt)}</strong> disbursed on <strong>${fmtD(c.disbursed)}</strong>. All dues are cleared. No amount is outstanding.</p>
-    <div style="background:var(--green-bg);border:2px solid var(--green);border-radius:var(--radius-lg);padding:16px;text-align:center">
-      <div style="font-size:12px;color:var(--green);font-weight:700">TOTAL REPAID</div>
-      <div style="font-size:26px;font-weight:700;color:var(--green)">${fmt(c.totalPayable)}</div>
-    </div>
-    <div style="text-align:center;color:var(--text3);font-size:11px;margin-top:18px;padding-top:12px;border-top:1px solid var(--border)">Authorized Signatory · Velavan Finance, Tamil Nadu</div>`;
+    <div style="text-align:center;color:var(--text3);font-size:11px;border-top:1px solid var(--border);padding-top:12px">Authorized Signatory · Velavan Finance, Tamil Nadu</div>`;
   }
-  prev.innerHTML=`<div class="card">${body}</div>`;
+  prev.innerHTML=`<div class="card">${hdr}${body}</div>`;
 }
 
-// ===== EMPLOYEES =====
+// ---- EMPLOYEES ----
 function renderEmps(){renderEmpList();renderEmpAccess();}
 function renderEmpList(){
-  document.getElementById("emp-list-wrap").innerHTML=EMPLOYEES.map(e=>{
-    const rnames=(e.routeIds||[]).map(id=>{const r=ROUTES.find(r=>r.id===id);return r?r.short:"";}).filter(Boolean).join(", ")||"None";
-    return`<div class="emp-card">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <div style="width:42px;height:42px;border-radius:50%;background:${e.role==="admin"?"var(--gold-bg)":"var(--purple-bg)"};border:2px solid ${e.role==="admin"?"var(--gold)":"var(--purple)"};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:${e.role==="admin"?"var(--gold)":"var(--purple)"};flex-shrink:0">${ini(e.name)}</div>
-        <div style="flex:1"><div style="font-size:14px;font-weight:700">${e.name}</div><div style="font-size:11px;color:var(--text3)">@${e.username} · ${e.phone}</div></div>
-        ${bdg(e.status)}
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-        ${bdg(e.role)}<span style="font-size:11px;color:var(--text3)">Routes: ${rnames}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button class="btn btn-sm" onclick="openEmpAccess(${e.id})">Edit Access</button>
-        <button class="btn btn-sm ${e.status==="active"?"btn-red":""}" onclick="toggleEmpSt(${e.id})">${e.status==="active"?"Deactivate":"Activate"}</button>
-      </div>
-    </div>`;
-  }).join("")+`<button class="btn btn-gold" style="width:100%;padding:13px;margin-top:4px" onclick="openAddEmp()">+ Add Employee</button>`;
+  if(isDesktop()){
+    document.getElementById("emp-list-wrap").innerHTML=`<div class="table-wrap"><table>
+      <thead><tr><th>Employee</th><th>Phone</th><th>Role</th><th>Routes</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${EMPLOYEES.map(e=>{const rn=(e.routeIds||[]).map(id=>ROUTES.find(r=>r.id===id)?.short||"").filter(Boolean).join(", ")||"None";
+        return`<tr><td><div style="display:flex;align-items:center;gap:8px">
+          <div style="width:30px;height:30px;border-radius:50%;background:${e.role==="admin"?"var(--gold-bg)":"var(--purple-bg)"};border:1.5px solid ${e.role==="admin"?"var(--gold-bdr)":"var(--purple-bdr)"};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${e.role==="admin"?"var(--gold)":"var(--purple)"}">${ini(e.name)}</div>
+          <div><div style="font-weight:700">${e.name}</div><div style="font-size:11px;color:var(--text3)">@${e.username}</div></div></div></td>
+          <td style="color:var(--text2)">${e.phone}</td><td>${bdg(e.role)}</td>
+          <td style="color:var(--text2);font-size:12px">${rn}</td><td>${bdg(e.status)}</td>
+          <td><div style="display:flex;gap:6px">
+            <button class="btn btn-sm" onclick="openEmpAccess(${e.id})">Edit Access</button>
+            <button class="btn btn-sm ${e.status==="active"?"btn-red":""}" onclick="toggleEmpSt(${e.id})">${e.status==="active"?"Deactivate":"Activate"}</button>
+          </div></td></tr>`;}).join("")}</tbody>
+    </table></div>`;
+  }else{
+    document.getElementById("emp-list-wrap").innerHTML=EMPLOYEES.map(e=>{
+      const rn=(e.routeIds||[]).map(id=>ROUTES.find(r=>r.id===id)?.short||"").filter(Boolean).join(", ")||"None";
+      return`<div class="emp-card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:42px;height:42px;border-radius:50%;background:${e.role==="admin"?"var(--gold-bg)":"var(--purple-bg)"};border:2px solid ${e.role==="admin"?"var(--gold-bdr)":"var(--purple-bdr)"};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:${e.role==="admin"?"var(--gold)":"var(--purple)"};flex-shrink:0">${ini(e.name)}</div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700">${e.name}</div><div style="font-size:11px;color:var(--text3)">@${e.username} · ${e.phone}</div></div>
+          ${bdg(e.status)}
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${bdg(e.role)}<span style="font-size:11px;color:var(--text3)">Routes: ${rn}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn btn-sm" onclick="openEmpAccess(${e.id})">Edit Access</button>
+          <button class="btn btn-sm ${e.status==="active"?"btn-red":""}" onclick="toggleEmpSt(${e.id})">${e.status==="active"?"Deactivate":"Activate"}</button>
+        </div>
+      </div>`;
+    }).join("");
+  }
 }
 function renderEmpAccess(){
-  document.getElementById("emp-access-wrap").innerHTML=ROUTES.map(r=>{
+  document.getElementById("emp-access-wrap").innerHTML=`<div class="routes-grid">${ROUTES.map(r=>{
     const ags=EMPLOYEES.filter(e=>e.routeIds&&e.routeIds.includes(r.id));
     const cs=CUSTOMERS.filter(c=>c.routeId===r.id);
-    return`<div class="route-card" style="margin-bottom:12px">
-      <div style="margin-bottom:10px">
-        <div style="font-size:14px;font-weight:700;color:var(--gold)">${r.name}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:2px">${cs.length} customers</div>
-      </div>
-      ${ags.length?ags.map(a=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--border)">
+    return`<div class="card">
+      <div style="margin-bottom:10px"><div style="font-size:14px;font-weight:700;color:var(--gold)">${r.name}</div><div style="font-size:11px;color:var(--text3);margin-top:2px">${cs.length} customers</div></div>
+      ${ags.length?ags.map(a=>`<div class="list-item" style="display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:30px;height:30px;border-radius:50%;background:var(--purple-bg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--purple)">${ini(a.name)}</div>
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--purple-bg);border:1.5px solid var(--purple-bdr);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--purple)">${ini(a.name)}</div>
           <div><div style="font-size:12px;font-weight:600">${a.name}</div><div style="font-size:10px;color:var(--text3)">${uc(a.role)}</div></div>
-        </div>${bdg(a.status)}</div>`).join(""):`<div style="padding:8px 0;border-top:1px solid var(--border);font-size:12px;color:var(--text3)">No employees assigned</div>`}
-      <button class="btn btn-sm" style="width:100%;margin-top:10px" onclick="openRouteModal(${r.id})">Manage Access</button>
+        </div>${bdg(a.status)}</div>`).join(""):`<div class="list-item" style="color:var(--text3);font-size:12px">No employees assigned</div>`}
+      <button class="btn btn-sm btn-w" style="margin-top:10px" onclick="openRouteModal(${r.id})">Manage Access</button>
     </div>`;
-  }).join("");
+  }).join("")}</div>`;
 }
 function empTab(t){
   document.getElementById("etab-list").className="tab"+(t==="list"?" active":"");
@@ -855,41 +1194,32 @@ function empTab(t){
   document.getElementById("emp-list-wrap").style.display=t==="list"?"block":"none";
   document.getElementById("emp-access-wrap").style.display=t==="access"?"block":"none";
 }
-function toggleEmpSt(eid){
-  const e=EMPLOYEES.find(e=>e.id===eid);if(!e)return;
-  e.status=e.status==="active"?"inactive":"active";renderEmpList();toast("Updated: "+e.name);
-}
-function openAddEmp(){
-  ["en","ep","eu","epw"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("er").value="agent";document.getElementById("ert").value="";
-  openModal("m-emp");
-}
+function toggleEmpSt(eid){const e=EMPLOYEES.find(e=>e.id===eid);if(!e)return;e.status=e.status==="active"?"inactive":"active";renderEmpList();toast("Updated: "+e.name);}
+function openAddEmp(){["en","ep","eu","epw"].forEach(id=>document.getElementById(id).value="");document.getElementById("er").value="agent";document.getElementById("ert").value="";openModal("m-emp");}
 function saveEmp(){
   const n=document.getElementById("en").value.trim(),u=document.getElementById("eu").value.trim(),pw=document.getElementById("epw").value.trim();
   if(!n||!u||!pw){toast("Fill required fields");return;}
-  const ph=document.getElementById("ep").value.trim(),role=document.getElementById("er").value,rt=document.getElementById("ert").value;
-  EMPLOYEES.push({id:EMPLOYEES.length+10,name:n,username:u,password:pw,phone:ph,role,routeIds:rt?[parseInt(rt)]:[],status:"active"});
-  closeModal("m-emp");renderEmpList();renderEmpAccess();toast("Added: "+n);
+  EMPLOYEES.push({id:EMPLOYEES.length+10,name:n,username:u,password:pw,phone:document.getElementById("ep").value.trim(),role:document.getElementById("er").value,routeIds:document.getElementById("ert").value?[parseInt(document.getElementById("ert").value)]:[],status:"active"});
+  closeModal("m-emp");renderEmps();toast("Added: "+n);
 }
 function openEmpAccess(eid){
   const e=EMPLOYEES.find(e=>e.id===eid);if(!e)return;
-  document.getElementById("m-access-title").textContent=e.name+" – Routes";
-  document.getElementById("m-access-body").innerHTML=`<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Select routes for ${e.name}:</p>`+
-    ROUTES.map(r=>`<label style="display:flex;align-items:center;gap:14px;padding:13px;background:var(--bg3);border-radius:var(--radius);margin-bottom:8px;cursor:pointer">
+  document.getElementById("m-access-title").textContent=e.name+" – Route Access";
+  document.getElementById("m-access-body").innerHTML=`<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Assign routes to ${e.name}:</p>`+
+    ROUTES.map(r=>`<label style="display:flex;align-items:center;gap:14px;padding:13px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;cursor:pointer">
       <input type="checkbox" ${(e.routeIds||[]).includes(r.id)?"checked":""} onchange="toggleAccess(${e.id},${r.id},this.checked)" style="width:20px;height:20px;accent-color:var(--gold);flex-shrink:0"/>
-      <span style="font-size:14px">${r.name}</span></label>`).join("");
+      <span style="font-size:14px;font-weight:500">${r.name}</span></label>`).join("");
   openModal("m-access");
 }
 function openRouteModal(rid){
   const r=ROUTES.find(r=>r.id===rid);if(!r)return;
-  document.getElementById("m-access-title").textContent=r.short+" – Access";
-  document.getElementById("m-access-body").innerHTML=`<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Employees for ${r.name}:</p>`+
-    EMPLOYEES.map(e=>`<label style="display:flex;align-items:center;gap:14px;padding:13px;background:var(--bg3);border-radius:var(--radius);margin-bottom:8px;cursor:pointer">
+  document.getElementById("m-access-title").textContent=r.short+" – Assign Employees";
+  document.getElementById("m-access-body").innerHTML=`<p style="font-size:12px;color:var(--text3);margin-bottom:14px">Select employees for ${r.name}:</p>`+
+    EMPLOYEES.map(e=>`<label style="display:flex;align-items:center;gap:14px;padding:13px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;cursor:pointer">
       <input type="checkbox" ${(e.routeIds||[]).includes(rid)?"checked":""} onchange="toggleAccess(${e.id},${rid},this.checked)" style="width:20px;height:20px;accent-color:var(--gold);flex-shrink:0"/>
       <div style="flex:1;display:flex;justify-content:space-between;align-items:center">
-        <div><div style="font-size:14px">${e.name}</div><div style="font-size:11px;color:var(--text3)">${uc(e.role)}</div></div>
-        ${bdg(e.status)}
-      </div></label>`).join("");
+        <div><div style="font-size:14px;font-weight:500">${e.name}</div><div style="font-size:11px;color:var(--text3)">${uc(e.role)}</div></div>
+        ${bdg(e.status)}</div></label>`).join("");
   openModal("m-access");
 }
 function toggleAccess(eid,rid,checked){
@@ -900,39 +1230,28 @@ function toggleAccess(eid,rid,checked){
   renderEmpList();renderEmpAccess();
 }
 
-// ===== ADD CUSTOMER =====
+// ---- ADD CUSTOMER ----
 function renderAddCust(){
   const ar=document.getElementById("ac-route");while(ar.options.length>1)ar.remove(1);myRoutes().forEach(r=>ar.add(new Option(r.name,r.id)));
   const aa=document.getElementById("ac-agent");while(aa.options.length>1)aa.remove(1);EMPLOYEES.filter(e=>e.role==="agent"&&e.status==="active").forEach(e=>aa.add(new Option(e.name,e.id)));
   document.getElementById("ac-date").value=TODAY.toISOString().split("T")[0];
-  document.getElementById("ac-ok").style.display="none";
-  calcLoan();
+  document.getElementById("ac-ok").style.display="none"; calcLoan();
 }
 function calcLoan(){
   const l=parseFloat(document.getElementById("ac-loan").value)||0,i=parseFloat(document.getElementById("ac-int").value)||15,d=parseInt(document.getElementById("ac-days").value)||100;
-  if(l>0){
-    const t=Math.round(l*(1+i/100));
-    document.getElementById("lc-p").textContent=fmt(l);document.getElementById("lc-i").textContent=fmt(l*i/100);
-    document.getElementById("lc-t").textContent=fmt(t);document.getElementById("lc-d").textContent=fmt(Math.round(t/d))+"/day";
-    document.getElementById("lc-box").style.display="block";
-  }else document.getElementById("lc-box").style.display="none";
+  if(l>0){const t=Math.round(l*(1+i/100));document.getElementById("lc-p").textContent=fmt(l);document.getElementById("lc-i").textContent=fmt(l*i/100);document.getElementById("lc-t").textContent=fmt(t);document.getElementById("lc-d").textContent=fmt(Math.round(t/d))+"/day";document.getElementById("lc-box").style.display="block";}
+  else document.getElementById("lc-box").style.display="none";
 }
 function addCustomer(){
-  const shop=document.getElementById("ac-shop").value.trim(),owner=document.getElementById("ac-owner").value.trim();
-  const phone=document.getElementById("ac-phone").value.trim(),routeId=parseInt(document.getElementById("ac-route").value);
-  const loan=parseFloat(document.getElementById("ac-loan").value);
+  const shop=document.getElementById("ac-shop").value.trim(),owner=document.getElementById("ac-owner").value.trim(),phone=document.getElementById("ac-phone").value.trim(),routeId=parseInt(document.getElementById("ac-route").value),loan=parseFloat(document.getElementById("ac-loan").value);
   if(!shop||!owner||!phone||!routeId||!loan){toast("⚠ Fill all required fields");return;}
-  const interest=parseFloat(document.getElementById("ac-int").value)||15,tenure=parseInt(document.getElementById("ac-days").value)||100;
-  const disbursed=document.getElementById("ac-date").value,address=document.getElementById("ac-address").value.trim();
+  const interest=parseFloat(document.getElementById("ac-int").value)||15,tenure=parseInt(document.getElementById("ac-days").value)||100,disbursed=document.getElementById("ac-date").value,address=document.getElementById("ac-address").value.trim();
   const tp=Math.round(loan*(1+interest/100));
   CUSTOMERS.push({id:Math.max(...CUSTOMERS.map(c=>c.id))+1,routeId,shop,owner,phone,address,loanAmt:loan,interest,tenure,disbursed,status:"active",totalPayable:tp,dailyEmi:Math.round(tp/tenure),collected:0,due:tp});
   ["ac-shop","ac-owner","ac-phone","ac-address","ac-loan"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("ac-route").value="";
-  document.getElementById("lc-box").style.display="none";
-  document.getElementById("ac-ok").style.display="block";
-  toast("✓ Customer added: "+shop);
-  populateSels();
-  setTimeout(()=>document.getElementById("ac-ok").style.display="none",3000);
+  document.getElementById("ac-route").value="";document.getElementById("lc-box").style.display="none";
+  document.getElementById("ac-ok").style.display="block";toast("✓ Customer added: "+shop);
+  populateSels();setTimeout(()=>document.getElementById("ac-ok").style.display="none",3000);
 }
 </script>
 </body>
