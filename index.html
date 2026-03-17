@@ -227,7 +227,7 @@ tr:hover td{background:var(--bg3);}
     <div style="text-align:center;margin-bottom:28px">
       <!-- BIG VEL LOGO -->
       <div style="display:inline-flex;flex-direction:column;align-items:center;gap:12px">
-        <svg viewBox="0 0 100 200" width="58" height="80" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 100 200" width="72" height="144" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="lv" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f8e060"/><stop offset="40%" stop-color="#d09018"/><stop offset="75%" stop-color="#b07010"/><stop offset="100%" stop-color="#906008"/></linearGradient>
             <linearGradient id="lbl" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c88010"/><stop offset="100%" stop-color="#f0d040"/></linearGradient>
@@ -284,7 +284,7 @@ tr:hover td{background:var(--bg3);}
         <div>
           <div style="font-size:26px;font-weight:800;color:var(--gold);letter-spacing:-.5px">Velavan Finance</div>
           <div style="font-size:13px;color:var(--text3);margin-top:4px;font-weight:500">வேலவன் நிதி நிறுவனம்</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:3px">Kumbakonam</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">Mayiladuthurai · Thanjavur · Kumbakonam</div>
         </div>
       </div>
     </div>
@@ -426,16 +426,46 @@ tr:hover td{background:var(--bg3);}
 
       <!-- COLLECTION -->
       <div id="pg-collection" class="page">
+        <!-- Route selector + progress bar -->
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-          <select id="cl-rt" onchange="renderColl()" style="min-width:200px;flex:1;max-width:300px"></select>
+          <select id="cl-rt" onchange="onRouteChange()" style="min-width:200px;flex:1;max-width:320px"></select>
           <div style="flex:1;min-width:160px">
             <div class="pb"><div id="cl-bar" class="pf" style="width:0%"></div></div>
             <div id="cl-pct" style="font-size:11px;color:var(--text3);margin-top:4px;text-align:right;font-weight:600">0% collected</div>
           </div>
         </div>
+        <!-- 4 stat cards -->
         <div id="cl-s" class="s4" style="margin-bottom:14px"></div>
-        <div id="cl-cards"></div>
-        <div id="cl-table" style="display:none"><div class="tw"><table><thead><tr><th>DL No.</th><th>Shop</th><th>Owner</th><th>Daily EMI</th><th>Balance</th><th>Status</th><th>Collect Amount</th></tr></thead><tbody id="cl-tbody"></tbody></table></div></div>
+        <!-- Tabs: Collect | Today's History -->
+        <div class="tabs" style="margin-bottom:14px">
+          <div class="tab active" id="cltab-list"    onclick="collTab('list')">Collect</div>
+          <div class="tab"        id="cltab-history" onclick="collTab('history')">Today's History</div>
+        </div>
+        <!-- COLLECT LIST -->
+        <div id="cl-list-wrap">
+          <div style="margin-bottom:12px"><input id="cl-q" type="search" placeholder="🔍  Search DL, shop, owner, phone…" oninput="renderCollList()" style="width:100%" autocomplete="off"/></div>
+          <div id="cl-cards"></div>
+          <div id="cl-table" style="display:none">
+            <div class="tw">
+              <table><thead><tr>
+                <th>DL No.</th><th>Shop</th><th>Owner</th>
+                <th>Daily EMI</th><th>Collected Today</th><th>Balance</th><th>Status</th><th>Action</th>
+              </tr></thead><tbody id="cl-tbody"></tbody></table>
+            </div>
+          </div>
+        </div>
+        <!-- TODAY HISTORY -->
+        <div id="cl-history-wrap" style="display:none">
+          <div id="cl-history-cards"></div>
+          <div id="cl-history-table" style="display:none">
+            <div class="tw">
+              <table><thead><tr>
+                <th>Time</th><th>DL No.</th><th>Shop</th><th>Amount</th><th>Method</th><th>Collector</th><th>Note</th>
+              </tr></thead><tbody id="cl-history-tbody"></tbody></table>
+            </div>
+          </div>
+          <div id="cl-history-total" style="margin-top:12px"></div>
+        </div>
       </div>
 
       <!-- PAYMENTS -->
@@ -615,22 +645,22 @@ let DL_SEQ={1:1,2:1,3:1,4:1};
 function nextDL(routeId){const n=DL_SEQ[routeId]||1;DL_SEQ[routeId]=n+1;return genDL(routeId,n);}
 
 let CUSTOMERS=[
-  {id:101,dl:"VF1-0001",routeId:1,shop:"Anbu Textiles",    owner:"Anburaj M",    phone:"94001 11001",address:"North Street, Mayiladuthurai",loanAmt:50000,interest:15,tenure:100,disbursed:"2025-01-10",status:"active"},
-  {id:102,dl:"VF1-0002",routeId:1,shop:"Sri Murugan Stores",owner:"Murugan K",   phone:"94001 11002",address:"Market Road, Mayiladuthurai",  loanAmt:30000,interest:15,tenure:100,disbursed:"2025-02-01",status:"active"},
+  {id:101,dl:"VF1-0001",routeId:1,shop:"Anbu Textiles",    owner:"Anburaj M",    phone:"94001 11001",address:"North Street, Mayiladuthurai",loanAmt:50000,interest:15,tenure:100,disbursed:"2026-01-28",status:"active"},
+  {id:102,dl:"VF1-0002",routeId:1,shop:"Sri Murugan Stores",owner:"Murugan K",   phone:"94001 11002",address:"Market Road, Mayiladuthurai",  loanAmt:30000,interest:15,tenure:100,disbursed:"2026-02-15",status:"active"},
   {id:103,dl:"VF1-0003",routeId:1,shop:"Kavitha Fancy",     owner:"Kavitha R",   phone:"94001 11003",address:"Gandhi Nagar, Mayiladuthurai", loanAmt:70000,interest:15,tenure:100,disbursed:"2024-12-01",status:"completed"},
-  {id:104,dl:"VF1-0004",routeId:1,shop:"Raj General Store", owner:"Rajesh P",    phone:"94001 11004",address:"Old Bus Stand, Mayiladuthurai",loanAmt:40000,interest:15,tenure:100,disbursed:"2025-03-01",status:"active"},
-  {id:105,dl:"VF1-0005",routeId:1,shop:"Tamil Fancy",       owner:"Tamilvanan A",phone:"94001 11005",address:"Fort Road, Mayiladuthurai",    loanAmt:25000,interest:15,tenure:100,disbursed:"2025-01-20",status:"overdue"},
-  {id:106,dl:"VF1-0006",routeId:1,shop:"Devi Kirana",       owner:"Devika S",    phone:"94001 11006",address:"Temple St, Mayiladuthurai",    loanAmt:35000,interest:15,tenure:100,disbursed:"2025-02-15",status:"active"},
-  {id:201,dl:"VF2-0001",routeId:2,shop:"Lakshmi Traders",   owner:"Lakshmi D",   phone:"94002 22001",address:"Thanjavur Main Road",          loanAmt:60000,interest:15,tenure:100,disbursed:"2025-01-15",status:"active"},
-  {id:202,dl:"VF2-0002",routeId:2,shop:"Selvam Hardware",   owner:"Selvam N",    phone:"94002 22002",address:"Big Temple Street, Thanjavur", loanAmt:45000,interest:15,tenure:100,disbursed:"2025-02-10",status:"active"},
-  {id:203,dl:"VF2-0003",routeId:2,shop:"Priya Boutique",    owner:"Priya K",     phone:"94002 22003",address:"Hospital Road, Thanjavur",     loanAmt:20000,interest:15,tenure:100,disbursed:"2025-03-05",status:"overdue"},
+  {id:104,dl:"VF1-0004",routeId:1,shop:"Raj General Store", owner:"Rajesh P",    phone:"94001 11004",address:"Old Bus Stand, Mayiladuthurai",loanAmt:40000,interest:15,tenure:100,disbursed:"2026-03-05",status:"active"},
+  {id:105,dl:"VF1-0005",routeId:1,shop:"Tamil Fancy",       owner:"Tamilvanan A",phone:"94001 11005",address:"Fort Road, Mayiladuthurai",    loanAmt:25000,interest:15,tenure:100,disbursed:"2026-01-31",status:"overdue"},
+  {id:106,dl:"VF1-0006",routeId:1,shop:"Devi Kirana",       owner:"Devika S",    phone:"94001 11006",address:"Temple St, Mayiladuthurai",    loanAmt:35000,interest:15,tenure:100,disbursed:"2026-02-20",status:"active"},
+  {id:201,dl:"VF2-0001",routeId:2,shop:"Lakshmi Traders",   owner:"Lakshmi D",   phone:"94002 22001",address:"Thanjavur Main Road",          loanAmt:60000,interest:15,tenure:100,disbursed:"2026-02-05",status:"active"},
+  {id:202,dl:"VF2-0002",routeId:2,shop:"Selvam Hardware",   owner:"Selvam N",    phone:"94002 22002",address:"Big Temple Street, Thanjavur", loanAmt:45000,interest:15,tenure:100,disbursed:"2026-02-10",status:"active"},
+  {id:203,dl:"VF2-0003",routeId:2,shop:"Priya Boutique",    owner:"Priya K",     phone:"94002 22003",address:"Hospital Road, Thanjavur",     loanAmt:20000,interest:15,tenure:100,disbursed:"2026-03-07",status:"overdue"},
   {id:204,dl:"VF2-0004",routeId:2,shop:"Balu Kirana",       owner:"Balakrishnan T",phone:"94002 22004",address:"South Main, Thanjavur",     loanAmt:35000,interest:15,tenure:100,disbursed:"2025-02-01",status:"active"},
   {id:205,dl:"VF2-0005",routeId:2,shop:"Ravi Electronics",  owner:"Ravi P",      phone:"94002 22005",address:"East Main, Thanjavur",         loanAmt:55000,interest:15,tenure:100,disbursed:"2025-01-20",status:"active"},
-  {id:301,dl:"VF3-0001",routeId:3,shop:"Ganesan Kirana",    owner:"Ganesan T",   phone:"94003 33001",address:"Sarangapani St, Kumbakonam",   loanAmt:80000,interest:15,tenure:100,disbursed:"2025-01-01",status:"active"},
+  {id:301,dl:"VF3-0001",routeId:3,shop:"Ganesan Kirana",    owner:"Ganesan T",   phone:"94003 33001",address:"Sarangapani St, Kumbakonam",   loanAmt:80000,interest:15,tenure:100,disbursed:"2026-01-16",status:"active"},
   {id:302,dl:"VF3-0002",routeId:3,shop:"Sri Ram Auto Parts",owner:"Ramesh B",    phone:"94003 33002",address:"Kasi Viswanath St, Kumbakonam",loanAmt:55000,interest:15,tenure:100,disbursed:"2025-02-15",status:"active"},
   {id:303,dl:"VF3-0003",routeId:3,shop:"Meena Textiles",    owner:"Meenakshi V", phone:"94003 33003",address:"West Main, Kumbakonam",         loanAmt:40000,interest:15,tenure:100,disbursed:"2025-01-20",status:"active"},
   {id:304,dl:"VF3-0004",routeId:3,shop:"Arjun Fancy",       owner:"Arjun R",     phone:"94003 33004",address:"Natarajan St, Kumbakonam",     loanAmt:22000,interest:15,tenure:100,disbursed:"2024-11-01",status:"completed"},
-  {id:401,dl:"VF4-0001",routeId:4,shop:"Pandian Stores",    owner:"Pandian R",   phone:"94004 44001",address:"Local Market, Kumbakonam",     loanAmt:30000,interest:15,tenure:100,disbursed:"2025-02-20",status:"active"},
+  {id:401,dl:"VF4-0001",routeId:4,shop:"Pandian Stores",    owner:"Pandian R",   phone:"94004 44001",address:"Local Market, Kumbakonam",     loanAmt:30000,interest:15,tenure:100,disbursed:"2026-02-25",status:"active"},
   {id:402,dl:"VF4-0002",routeId:4,shop:"Malar Textiles",    owner:"Malar V",     phone:"94004 44002",address:"Pillayar Kovil St, Kumbakonam",loanAmt:50000,interest:15,tenure:100,disbursed:"2025-01-10",status:"active"},
   {id:403,dl:"VF4-0003",routeId:4,shop:"Kumar Electronics", owner:"Kumar A",     phone:"94004 44003",address:"Railway St, Kumbakonam",       loanAmt:35000,interest:15,tenure:100,disbursed:"2025-03-01",status:"active"},
   {id:404,dl:"VF4-0004",routeId:4,shop:"Veni Sarees",       owner:"Veni S",      phone:"94004 44004",address:"Old Town, Kumbakonam",         loanAmt:28000,interest:15,tenure:100,disbursed:"2025-02-10",status:"overdue"},
@@ -659,7 +689,7 @@ CUSTOMERS.forEach(c=>{
 });
 PAYMENTS.sort((a,b)=>b.date.localeCompare(a.date));
 
-let COLL_DONE={}; // cid -> true for today
+let COLL_TODAY={}; // cid -> total amount collected TODAY (accumulates across multiple entries)
 let CU=null,PS=[],CUR="dashboard";
 let COLL_CID=null; // current customer for collection modal
 
@@ -687,7 +717,7 @@ function doLogin(){
 }
 function fl(u,p){document.getElementById("lu").value=u;document.getElementById("lp").value=p;}
 function logout(){
-  CU=null;PS=[];COLL_DONE={};
+  CU=null;PS=[];COLL_TODAY={};
   document.getElementById("app").classList.remove("on");
   document.getElementById("app").style.display="none";
   document.getElementById("ls").style.display="flex";
@@ -958,94 +988,320 @@ function goCD(cid){
   document.getElementById("ht").textContent=c.shop;document.getElementById("dht").textContent=`${c.dl} – ${c.shop}`;
 }
 
-// ===== COLLECTION =====
+// ===== ROUTE CHANGE — clear search then re-render =====
+function onRouteChange(){
+  const q=document.getElementById("cl-q");
+  if(q) q.value="";
+  renderColl();
+}
+
+// ===== COLLECTION TAB SWITCH =====
+function collTab(t){
+  document.getElementById("cltab-list").className   ="tab"+(t==="list"?" active":"");
+  document.getElementById("cltab-history").className="tab"+(t==="history"?" active":"");
+  document.getElementById("cl-list-wrap").style.display   =t==="list"?"block":"none";
+  document.getElementById("cl-history-wrap").style.display=t==="history"?"block":"none";
+  if(t==="history") renderCollHistory();
+}
+
+// ===== RENDER COLLECTION (stats + list) =====
 function renderColl(){
   const rs=myRoutes(),sel=document.getElementById("cl-rt");
   if(!sel.value&&rs.length)sel.value=rs[0].id;
-  const rid=parseInt(sel.value),cs=CUSTOMERS.filter(c=>c.routeId===rid&&c.status!=="completed");
-  let col=0,tgt=0;cs.forEach(c=>{tgt+=c.dailyEmi;if(COLL_DONE[c.id])col+=c.dailyEmi;});
-  const pct=tgt?Math.round(col/tgt*100):0;
+  const rid=parseInt(sel.value);
+
+  // All active/overdue customers for the list
+  // Also keep any who have a PARTIAL today entry (less than dailyEmi) even if status flipped
+  const allCs=CUSTOMERS.filter(c=>
+    c.routeId===rid &&
+    (c.status!=="completed" || ((COLL_TODAY[c.id]||0)>0 && (COLL_TODAY[c.id]||0)<c.dailyEmi))
+  );
+
+  // Stats include today-completed too so progress counts them
+  const statsCs=CUSTOMERS.filter(c=>c.routeId===rid&&(c.status!=="completed"||(COLL_TODAY[c.id]||0)>0));
+  let colToday=0,tgt=0;
+  statsCs.forEach(c=>{tgt+=c.dailyEmi;colToday+=(COLL_TODAY[c.id]||0);});
+  const pct=tgt?Math.min(100,Math.round(colToday/tgt*100)):0;
+
   document.getElementById("cl-bar").style.width=pct+"%";
-  document.getElementById("cl-pct").textContent=pct+"% collected today";
+  document.getElementById("cl-pct").textContent=pct+"% of daily target collected";
+
+  const fullPaidToday=statsCs.filter(c=>(COLL_TODAY[c.id]||0)>=c.dailyEmi).length;
+  const partialToday =statsCs.filter(c=>(COLL_TODAY[c.id]||0)>0&&(COLL_TODAY[c.id]||0)<c.dailyEmi).length;
+  const notYet       =allCs.filter(c=>!(COLL_TODAY[c.id]||0)).length;
+
   document.getElementById("cl-s").innerHTML=`
-    <div class="sc"><div class="sl">Target</div><div class="sv" style="font-size:18px">${fmt(tgt)}</div></div>
-    <div class="sc" style="background:var(--green-bg);border-color:var(--green-bdr)"><div class="sl" style="color:var(--green)">Collected</div><div class="sv" style="font-size:18px;color:var(--green)">${fmt(col)}</div></div>
-    <div class="sc" style="background:var(--red-bg);border-color:var(--red-bdr)"><div class="sl" style="color:var(--red)">Pending</div><div class="sv" style="font-size:18px;color:var(--red)">${fmt(tgt-col)}</div></div>
-    <div class="sc" style="background:var(--gold-bg);border-color:var(--gold-bdr)"><div class="sl" style="color:var(--gold)">Done</div><div class="sv" style="font-size:18px;color:var(--gold)">${pct}%</div></div>
+    <div class="sc">
+      <div class="sl">Daily Target</div>
+      <div class="sv" style="font-size:18px">${fmt(tgt)}</div>
+      <div class="ss">${allCs.length} customers · ${notYet} pending</div>
+    </div>
+    <div class="sc" style="background:var(--green-bg);border-color:var(--green-bdr)">
+      <div class="sl" style="color:var(--green)">Collected Today</div>
+      <div class="sv" style="font-size:18px;color:var(--green)">${fmt(colToday)}</div>
+      <div class="ss" style="color:var(--green)">${fullPaidToday} full · ${partialToday} partial</div>
+    </div>
+    <div class="sc" style="background:var(--red-bg);border-color:var(--red-bdr)">
+      <div class="sl" style="color:var(--red)">Still Pending</div>
+      <div class="sv" style="font-size:18px;color:var(--red)">${fmt(Math.max(0,tgt-colToday))}</div>
+      <div class="ss" style="color:var(--red)">${notYet} customers</div>
+    </div>
+    <div class="sc" style="background:var(--gold-bg);border-color:var(--gold-bdr)">
+      <div class="sl" style="color:var(--gold)">Progress</div>
+      <div class="sv" style="font-size:18px;color:var(--gold)">${pct}%</div>
+      <div class="ss" style="color:var(--gold)">${fmt(colToday)} / ${fmt(tgt)}</div>
+    </div>
   `;
-  // CARDS (mobile)
-  document.getElementById("cl-cards").innerHTML=cs.length?cs.map(c=>`
-    <div style="background:${COLL_DONE[c.id]?"var(--green-bg)":"var(--bg2)"};border:1.5px solid ${COLL_DONE[c.id]?"var(--green-bdr)":"var(--border)"};border-radius:var(--rl);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(26,16,8,.07)">
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 8px;border-radius:12px;font-weight:700">${c.dl}</span>
-          ${COLL_DONE[c.id]?`<span class="badge badge-completed">Collected</span>`:""}
-        </div>
-        <div style="font-size:14px;font-weight:700">${c.shop}</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner}</div>
-        <div style="display:flex;gap:12px;margin-top:7px">
-          <span style="font-size:13px;font-weight:700;color:var(--gold)">${fmt(c.dailyEmi)} EMI</span>
-          <span style="font-size:12px;color:${c.due>0?"var(--red)":"var(--green)"};font-weight:600">Bal: ${fmt(c.due)}</span>
-        </div>
-      </div>
-      <button onclick="openCollModal(${c.id})" class="btn ${COLL_DONE[c.id]?"btn-gold":""}" style="flex-shrink:0;min-width:86px">
-        ${COLL_DONE[c.id]?"✓ Done":"Collect"}
-      </button>
-    </div>`).join(""):`<div class="em-st"><div style="font-size:32px;opacity:.4;margin-bottom:8px">₹</div><div>No active customers</div></div>`;
-  // TABLE (desktop)
-  document.getElementById("cl-tbody").innerHTML=cs.length?cs.map(c=>`<tr style="background:${COLL_DONE[c.id]?"var(--green-bg)":"transparent"}">
-    <td><span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 8px;border-radius:12px;font-weight:700">${c.dl}</span></td>
-    <td style="font-weight:600">${c.shop}</td>
-    <td style="color:var(--text2)">${c.owner}</td>
-    <td style="color:var(--gold);font-weight:700">${fmt(c.dailyEmi)}</td>
-    <td style="color:${c.due>0?"var(--red)":"var(--green)"};font-weight:700">${fmt(c.due)}</td>
-    <td>${bdg(c.status)}</td>
-    <td>
-      ${COLL_DONE[c.id]
-        ?`<span style="color:var(--green);font-weight:700">✓ Collected</span>`
-        :`<button class="btn btn-gold btn-sm" onclick="openCollModal(${c.id})">Enter Amount</button>`}
-    </td>
-  </tr>`).join(""):`<tr><td colspan="7"><div class="em-st" style="padding:16px">No customers</div></td></tr>`;
+
+  // Render the customer list (respects search)
+  renderCollList();
 }
 
-// Collection Modal
+// ===== RENDER COLLECTION LIST (search-aware, called by oninput too) =====
+function renderCollList(){
+  const sel=document.getElementById("cl-rt");
+  const rid=parseInt(sel&&sel.value||0);
+  if(!rid) return;
+
+  // All active/overdue — partial payers ALWAYS stay in the list
+  // Only fully loan-closed customers (completed + full EMI today) are removed
+  const allCs=CUSTOMERS.filter(c=>
+    c.routeId===rid &&
+    (c.status!=="completed" || ((COLL_TODAY[c.id]||0)>0 && (COLL_TODAY[c.id]||0)<c.dailyEmi))
+  );
+
+  // Apply search filter
+  const qEl=document.getElementById("cl-q");
+  const q=qEl?qEl.value.trim():"";
+  let cs=allCs;
+  if(q){
+    const ql=q.toLowerCase();
+    cs=allCs.filter(c=>
+      c.dl.toLowerCase().includes(ql)||
+      c.shop.toLowerCase().includes(ql)||
+      c.owner.toLowerCase().includes(ql)||
+      c.phone.includes(q)
+    );
+  }
+
+  function collBadge(c){
+    const a=COLL_TODAY[c.id]||0;
+    if(!a) return"";
+    if(a>=c.dailyEmi) return`<span class="badge badge-active">✓ Full EMI</span>`;
+    return`<span class="badge" style="background:rgba(184,100,8,.10);color:#b86008;border:1px solid rgba(184,100,8,.30)">Partial ${fmt(a)}</span>`;
+  }
+
+  // ── CARDS (mobile/tablet) ──
+  document.getElementById("cl-cards").innerHTML=cs.length?cs.map(c=>{
+    const ta=COLL_TODAY[c.id]||0;
+    const paid=ta>0, full=ta>=c.dailyEmi;
+    return`
+    <div style="background:${full?"var(--green-bg)":paid?"rgba(255,248,220,.9)":"var(--bg2)"};
+         border:1.5px solid ${full?"var(--green-bdr)":paid?"rgba(184,120,8,.35)":"var(--border)"};
+         border-radius:var(--rl);padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(26,16,8,.07)">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="flex:1;min-width:0">
+          <!-- DL + badges -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+            <span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 9px;border-radius:12px;font-weight:700;white-space:nowrap">${c.dl}</span>
+            ${collBadge(c)} ${bdg(c.status)}
+          </div>
+          <!-- Name + phone -->
+          <div style="font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.shop}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:1px">${c.owner} · ${c.phone}</div>
+          <!-- 3 stat boxes: EMI | Today Collected | Loan Balance -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
+            <div style="background:var(--gold-bg);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:8px;text-align:center">
+              <div style="font-size:10px;color:var(--gold);font-weight:700;text-transform:uppercase">Daily EMI</div>
+              <div style="font-size:14px;font-weight:800;color:var(--gold);margin-top:2px">${fmt(c.dailyEmi)}</div>
+            </div>
+            <div style="background:${paid?"var(--green-bg)":"var(--bg3)"};border:1px solid ${paid?"var(--green-bdr)":"var(--border)"};border-radius:var(--r);padding:8px;text-align:center">
+              <div style="font-size:10px;color:${paid?"var(--green)":"var(--text3)"};font-weight:700;text-transform:uppercase">Today</div>
+              <div style="font-size:14px;font-weight:800;color:${paid?"var(--green)":"var(--text3)"};margin-top:2px">${paid?fmt(ta):"—"}</div>
+            </div>
+            <div style="background:${c.due>0?"var(--red-bg)":"var(--green-bg)"};border:1px solid ${c.due>0?"var(--red-bdr)":"var(--green-bdr)"};border-radius:var(--r);padding:8px;text-align:center">
+              <div style="font-size:10px;color:${c.due>0?"var(--red)":"var(--green)"};font-weight:700;text-transform:uppercase">Balance</div>
+              <div style="font-size:14px;font-weight:800;color:${c.due>0?"var(--red)":"var(--green)"};margin-top:2px">${fmt(c.due)}</div>
+            </div>
+          </div>
+          <!-- partial warning -->
+          ${paid&&!full?`<div style="margin-top:8px;padding:6px 10px;background:rgba(184,100,8,.09);border:1px solid rgba(184,100,8,.28);border-radius:var(--r);font-size:11px;color:#b86008;font-weight:600">⚠ Partial — ${fmt(c.dailyEmi-ta)} still due today</div>`:""}
+        </div>
+        <!-- Collect button — always visible -->
+        <button onclick="openCollModal(${c.id})" class="btn btn-gold"
+          style="flex-shrink:0;width:72px;padding:9px 6px;font-size:12px;text-align:center;line-height:1.4;align-self:flex-start">
+          ${full?"+ More":paid?"+ Add":"Collect"}
+        </button>
+      </div>
+    </div>`;
+  }).join(""):`<div class="em-st"><div style="font-size:28px;opacity:.4;margin-bottom:8px">${q?"🔍":"₹"}</div><div>${q?"No results for '"+q+"'":"No active customers"}</div></div>`;
+
+  // ── TABLE (desktop) ──
+  document.getElementById("cl-tbody").innerHTML=cs.length?cs.map(c=>{
+    const ta=COLL_TODAY[c.id]||0,paid=ta>0,full=ta>=c.dailyEmi;
+    return`<tr style="background:${full?"var(--green-bg)":paid?"rgba(255,248,220,.5)":"transparent"}">
+      <td><span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 8px;border-radius:12px;font-weight:700">${c.dl}</span></td>
+      <td><div style="font-weight:700">${c.shop}</div><div style="font-size:11px;color:var(--text3)">${c.owner}</div></td>
+      <td><a href="tel:${c.phone}">${c.phone}</a></td>
+      <td style="color:var(--gold);font-weight:800">${fmt(c.dailyEmi)}</td>
+      <td style="color:${paid?"var(--green)":"var(--text3)"};font-weight:${paid?"800":"400"}">
+        ${paid?`<div>${fmt(ta)}</div>${!full?`<div style="font-size:10px;color:#b86008">partial</div>`:""}` : "—"}
+      </td>
+      <td style="color:${c.due>0?"var(--red)":"var(--green)"};font-weight:800">${fmt(c.due)}</td>
+      <td>${bdg(c.status)}</td>
+      <td><button class="btn btn-gold btn-sm" onclick="openCollModal(${c.id})">${full?"+ More":paid?"+ Add More":"Collect"}</button></td>
+    </tr>`;
+  }).join(""):`<tr><td colspan="8"><div class="em-st" style="padding:16px">${q?"No results":"No customers"}</div></td></tr>`;
+}
+
+// ===== TODAY'S HISTORY =====
+function renderCollHistory(){
+  const sel=document.getElementById("cl-rt");
+  const rid=parseInt(sel&&sel.value||0);
+  const todayStr=TODAY.toISOString().split("T")[0];
+  const pays=PAYMENTS.filter(p=>p.rid===rid&&p.date===todayStr);
+  const total=pays.reduce((s,p)=>s+p.amount,0);
+
+  document.getElementById("cl-history-total").innerHTML=pays.length?`
+    <div style="background:var(--gold-bg);border:1.5px solid var(--gold-bdr);border-radius:var(--rl);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <div>
+        <div style="font-size:11px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.05em">Total Collected Today</div>
+        <div style="font-size:26px;font-weight:800;color:var(--gold);margin-top:3px">${fmt(total)}</div>
+      </div>
+      <div style="text-align:right"><div style="font-size:20px;font-weight:700;color:var(--text2)">${pays.length}</div><div style="font-size:11px;color:var(--text3)">transaction${pays.length>1?"s":""}</div></div>
+    </div>`:
+    `<div class="em-st"><div style="font-size:28px;opacity:.4;margin-bottom:8px">📋</div><div>No collections today for this route</div></div>`;
+
+  // Cards (mobile)
+  document.getElementById("cl-history-cards").innerHTML=pays.map(p=>`
+    <div style="background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:13px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;box-shadow:0 1px 3px rgba(26,16,8,.06)">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:5px">
+          <span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 8px;border-radius:12px;font-weight:700">${p.dl}</span>
+        </div>
+        <div style="font-size:13px;font-weight:700">${p.cname}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">👤 ${p.collector} · ${p.method}</div>
+        ${p.note?`<div style="font-size:11px;color:var(--text3);margin-top:2px">📝 ${p.note}</div>`:""}
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:20px;font-weight:800;color:var(--green)">${fmt(p.amount)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${p.method}</div>
+      </div>
+    </div>`).join("");
+
+  // Table (desktop)
+  document.getElementById("cl-history-tbody").innerHTML=pays.length?pays.map(p=>`
+    <tr>
+      <td style="color:var(--text3)">${fmtD(p.date)}</td>
+      <td><span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 8px;border-radius:12px;font-weight:700">${p.dl}</span></td>
+      <td style="font-weight:700">${p.cname}</td>
+      <td style="color:var(--green);font-weight:800;font-size:15px">${fmt(p.amount)}</td>
+      <td>${p.method}</td>
+      <td style="color:var(--text2)">${p.collector}</td>
+      <td style="color:var(--text3)">${p.note||"—"}</td>
+    </tr>`).join(""):`<tr><td colspan="7"><div class="em-st" style="padding:16px">No transactions today</div></td></tr>`;
+}
+
+// ===== COLLECTION MODAL =====
 function openCollModal(cid){
   const c=CUSTOMERS.find(c=>c.id===cid);if(!c)return;
   COLL_CID=cid;
-  document.getElementById("mc-title").textContent=`Collect – ${c.shop}`;
+  const ta=COLL_TODAY[cid]||0;
+  const isPartial=ta>0&&ta<c.dailyEmi;
+  const suggested=isPartial?Math.max(0,c.dailyEmi-ta):(ta>=c.dailyEmi?0:c.dailyEmi);
+
+  document.getElementById("mc-title").textContent="Collect – "+c.shop;
   document.getElementById("mc-info").innerHTML=`
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
-      <span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 8px;border-radius:12px;font-weight:700">${c.dl}</span>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+      <span style="font-size:11px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bdr);padding:2px 9px;border-radius:12px;font-weight:700">${c.dl}</span>
       ${bdg(c.status)}
+      ${ta>0?`<span style="font-size:11px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bdr);padding:2px 9px;border-radius:12px;font-weight:700">Paid today: ${fmt(ta)}</span>`:""}
     </div>
-    <div style="font-weight:600">${c.shop} – ${c.owner}</div>
-    <div style="margin-top:6px;display:flex;gap:16px;font-size:12px">
-      <span>Daily EMI: <strong style="color:var(--gold)">${fmt(c.dailyEmi)}</strong></span>
-      <span>Balance: <strong style="color:var(--red)">${fmt(c.due)}</strong></span>
+    <div style="font-size:15px;font-weight:700">${c.shop}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:2px">${c.owner} · ${c.phone}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+      <div style="background:var(--gold-bg);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--gold);font-weight:700;text-transform:uppercase">Daily EMI</div>
+        <div style="font-size:19px;font-weight:800;color:var(--gold);margin-top:3px">${fmt(c.dailyEmi)}</div>
+      </div>
+      <div style="background:${ta>0?"var(--green-bg)":"var(--bg3)"};border:1px solid ${ta>0?"var(--green-bdr)":"var(--border)"};border-radius:var(--r);padding:10px;text-align:center">
+        <div style="font-size:10px;color:${ta>0?"var(--green)":"var(--text3)"};font-weight:700;text-transform:uppercase">Collected Today</div>
+        <div style="font-size:19px;font-weight:800;color:${ta>0?"var(--green)":"var(--text3)"};margin-top:3px">${ta>0?fmt(ta):"—"}</div>
+      </div>
+      <div style="background:var(--red-bg);border:1px solid var(--red-bdr);border-radius:var(--r);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--red);font-weight:700;text-transform:uppercase">Total Balance</div>
+        <div style="font-size:19px;font-weight:800;color:var(--red);margin-top:3px">${fmt(c.due)}</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase">Loan Repaid</div>
+        <div style="font-size:19px;font-weight:800;color:var(--text2);margin-top:3px">${Math.round(c.collected/c.totalPayable*100)}%</div>
+      </div>
     </div>
+    ${isPartial?`<div style="margin-top:10px;padding:9px 12px;background:rgba(184,100,8,.09);border:1px solid rgba(184,100,8,.3);border-radius:var(--r);font-size:12px;color:#b86008;font-weight:600">⚠ Partial today — ${fmt(c.dailyEmi-ta)} remaining of EMI</div>`:""}
+    ${ta>=c.dailyEmi?`<div style="margin-top:10px;padding:9px 12px;background:var(--green-bg);border:1px solid var(--green-bdr);border-radius:var(--r);font-size:12px;color:var(--green);font-weight:600">✓ Today's EMI fully collected. Extra payments allowed.</div>`:""}
   `;
-  document.getElementById("mc-amt").value=c.dailyEmi; // prefill with EMI, agent can change
+  document.getElementById("mc-amt").value=suggested>0?suggested:"";
   document.getElementById("mc-meth").value="Cash";
   document.getElementById("mc-date").value=TODAY.toISOString().split("T")[0];
   document.getElementById("mc-note").value="";
   openMo("m-coll");
+  setTimeout(()=>{const el=document.getElementById("mc-amt");if(el){el.focus();el.select();}},300);
 }
+
+// ===== SUBMIT COLLECTION =====
 function submitColl(){
   const c=CUSTOMERS.find(c=>c.id===COLL_CID);if(!c)return;
-  const amt=parseFloat(document.getElementById("mc-amt").value);
-  if(!amt||amt<=0){toast("⚠ Enter valid amount");return;}
+  const amtStr=document.getElementById("mc-amt").value;
+  const amt=parseFloat(amtStr);
+
+  if(!amtStr||isNaN(amt)||amt<=0){
+    const el=document.getElementById("mc-amt");
+    el.style.borderColor="var(--red)";el.style.boxShadow="0 0 0 3px var(--red-bg)";
+    el.focus();setTimeout(()=>{el.style.borderColor="";el.style.boxShadow="";},1500);
+    toast("⚠ Enter a valid amount");return;
+  }
+
+
   const method=document.getElementById("mc-meth").value;
-  const date=document.getElementById("mc-date").value;
-  const note=document.getElementById("mc-note").value.trim();
+  const date  =document.getElementById("mc-date").value;
+  const note  =document.getElementById("mc-note").value.trim();
   const r=ROUTES.find(r=>r.id===c.routeId);
   const ag=EMPLOYEES.find(e=>e.routeIds&&e.routeIds.includes(c.routeId)&&e.role==="agent");
+
+  // 1. Record in payments ledger
   PAYMENTS.unshift({id:PAYMENTS.length+1,date,cid:c.id,dl:c.dl,cname:c.shop,rid:c.routeId,rname:r?r.short:"",amount:amt,method,collector:ag?ag.name:CU.name,note});
-  c.collected+=amt;c.due=Math.max(0,c.due-amt);
-  if(c.due<=0)c.status="completed";
-  COLL_DONE[c.id]=true;
+
+  // 2. Update customer totals
+  c.collected=Math.round((c.collected||0)+amt);
+  c.due=Math.max(0,Math.round(c.totalPayable-c.collected));
+  if(c.due<=0){c.status="completed";c.due=0;}
+
+  // 3. Accumulate today's per-customer amount
+  COLL_TODAY[c.id]=Math.round((COLL_TODAY[c.id]||0)+amt);
+  const todayTotal=COLL_TODAY[c.id];
+
+  // Determine collection type BEFORE checking status
+  // Partial = today's total is still less than the daily EMI
+  const isPartialToday = todayTotal < c.dailyEmi;
+
   closeMo("m-coll");
-  toast(`✓ Collected ${fmt(amt)} from ${c.shop}`);
+
+  // Toast — clear, accurate message
+  if(isPartialToday){
+    // Partial EMI — customer stays in list regardless of loan balance
+    toast("⚡ Partial: "+fmt(amt)+" collected · EMI pending: "+fmt(c.dailyEmi-todayTotal));
+  } else if(c.status==="completed"){
+    // Loan fully closed
+    toast("🎉 Loan FULLY CLOSED — "+c.shop+" ("+c.dl+")");
+  } else {
+    // Full EMI collected but loan still running
+    toast("✓ "+fmt(amt)+" collected from "+c.shop+" · Balance: "+fmt(c.due));
+  }
+
+  // Refresh stats + list (list uses renderCollList so search is preserved)
   renderColl();
+  if(document.getElementById("cltab-history").classList.contains("active")) renderCollHistory();
+  if(CUR==="customer-detail") goCD(c.id);
 }
 
 // ===== PAYMENTS =====
